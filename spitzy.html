@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Making Accessible Content Easy and Part of Your Work - Cynthia Ng</title>
+		<title>Solve differential equations in Ruby using spitzy - Alexej Gossmann</title>
 
-		<meta name="description" content="Center for Instruction Development &amp; Distance Education at the University of Pittsburgh Webinar February 2015 presentation on creating accessible (digital) content.">
-		<meta name="author" content="Cynthia &quote;Arty&quote; Ng">
+		<meta name="description" content="Tulane University Department of Mathematics.">
+		<meta name="author" content="Alexej Gossmann">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -35,6 +35,17 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+
+    <!-- MathJax interation, copied from http://cryptotoxin.github.io/coding/math-symbols-latex-and-markdown/ and others-->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"]]}
+      });
+      MathJax.Hub.Config({TeX: {Macros:{subscript:['_{#1}',1],superscript:['^{#1}',1]}}});
+    </script> 
+    <script type="text/javascript"
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 	</head>
 
 	<body>
@@ -43,16 +54,17 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
-					<h1>Making Accessible Content Easy and Part of Your Work</h1>
-					<p>
-							<a href="http://about.me/cynthiang">Cynthia Ng</a><br>
-							<a href="http://twitter.com/TheRealArty">@TheRealArty</a><br>
-							February 5, 2015
-					</p>
-					<aside class="notes">
-						<p>Introduction - Hi everyone, hope you’re having a good day.</p>
-					</aside>
+				<section data-markdown>
+<script type="text/template">
+##Initial Value Problems
+
+An initial value problem is an ordinary differential equation of the form 
+
+* ODE: $\frac{dy}{dx} = f(x,y)$ for $a \leq x \leq b$,
+* with initial condition $y(a) = y_0$.
+
+For this kind of differential equation [spitzy](https://github.com/agisga/spitzy.git) provides the class `Ode`, which currently has three methods, [Dormand-Prince](http://en.wikipedia.org/wiki/Dormand%E2%80%93Prince_method), [Forward Euler](http://en.wikipedia.org/wiki/Euler_method) and an [Adams-Bashforth](http://en.wikipedia.org/wiki/Linear_multistep_method) method of order 2.
+</script>
 				</section>
 
 				<section>
