@@ -71,7 +71,7 @@
             <script type="text/template">
 ## What/Who is spitzy?
 
-![Spitzy](images/spitzy.jpg "spitzy.jpg")
+![Spitzy](images/spitzy.jpg?raw=true "spitzy.jpg")
 
 Spitzy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\equiv$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*YZTIPS*
 
@@ -103,7 +103,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![Ruby logo](images/ruby.png "ruby.png")
+![Ruby logo](images/ruby.png?raw=true "ruby.png")
 
 <https://www.ruby-lang.org/en/documentation/success-stories/>
             </script>
@@ -113,7 +113,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![Ruby on Rails logo](images/Ruby_on_Rails-logo.jpeg "Ruby_on_Rails-logo.png")
+![Ruby on Rails logo](images/Ruby_on_Rails-logo.jpeg?raw=true "Ruby_on_Rails-logo.png")
 
 <http://thecoderfactory.com/posts/top-15-sites-built-with-ruby-on-rails>
             </script>
@@ -123,7 +123,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![SciRuby logo](images/sciruby_logo.png "sciruby_logo.png")
+![SciRuby logo](images/sciruby_logo.png?raw=true "sciruby_logo.png")
 
 <http://sciruby.com/>
             </script>
@@ -171,7 +171,7 @@ For this kind of differential equation [spitzy](https://github.com/agisga/spitzy
 
           <section data-markdown>
             <script type="text/template">
-## Dormand-Prince Example
+### Dormand-Prince Example
 
 * ODE: $\frac{dy}{dx} = -2y + e^{-2(x-6)^2}$, $0 \leq x \leq 10$,
 * IC: $y(0) = 1$.
@@ -186,7 +186,7 @@ dopri_sol = Ode.new(xrange: [0.0,10.0], dx: 1.5, yini: 1.0,
 
           <section data-markdown>
             <script type="text/template">
-## Dormand-Prince Example
+### Dormand-Prince Example
 
 ![Dormand-Prince example plot](images/dopri2.png?raw=true "Dormand-Prince example plot")
             </script>
@@ -208,7 +208,7 @@ dopri_sol = Ode.new(xrange: [0.0,10.0], dx: 1.5, yini: 1.0,
 
           <section data-markdown>
             <script type="text/template">
-## Forward Euler Example
+### Forward Euler Example
 
 * ODE: $\frac{dy}{dx} = 1 + \frac{y}{x} + \left(\frac{y}{x}\right)^2$, $1 \leq x \leq 4$,
 * IC: $y(1) = 0$.
@@ -223,7 +223,7 @@ euler_sol = Ode.new(xrange: [1.0,4.0], dx: 0.01,
 
           <section data-markdown>
             <script type="text/template">
-## Forward Euler Example
+### Forward Euler Example
 ![Euler method example plot](images/euler_plot.png?raw=true "Euler method example plot")
             </script>
           </section>
@@ -244,7 +244,7 @@ euler_sol = Ode.new(xrange: [1.0,4.0], dx: 0.01,
 
           <section data-markdown>
             <script type="text/template">
-## Second-Order Adams-Bashforth Example
+### Second-Order Adams-Bashforth Example
 
 * ODE: $\frac{dy}{dx} = -2xy$, $0 \leq x \leq 4$,
 * IC: $y(0) = 1$.
@@ -263,7 +263,7 @@ exact_sol = ab2_sol1.x.map { |tt| Math::exp(-(tt**2)) }
 
           <section data-markdown>
             <script type="text/template">
-## Second-Order Adams-Bashforth Example
+### Second-Order Adams-Bashforth Example
 
 ![Adams-Bashforth example plot](images/ab2_plot.png?raw=true "Adams-Bashforth example plot")
             </script>
@@ -355,55 +355,226 @@ bvp_sol = Bvp.new(xrange: xrange, mx: 100, bc: bc,
         </section>
       </section>
 
+      <section data-markdown>
+          <script type="text/template">
+##2D Poisson's Equation
+
+Poisson's equation is the elliptic boundary value problem:
+
+* $\Delta u = f$ in $\Omega$,
+* with the boundary condition: $u=g$ on $\partial \Omega$.
+
+Here we only consider the 2-D version, where $\Delta u = \frac{d^2 u}{dx^2} + \frac{d^2 u}{dy^2}$.
+          </script>
+      </section>
+
+
+      <section>
         <section data-markdown>
           <script type="text/template">
+### Five-point Laplacian
+
+* Assume a rectangular domain, i.e. $\Omega = [a,b]\times[c,d]$. 
+
+* Each side of the domain is subdivided into subintervals of the same length $h$.
+
+* Approximate the Laplacian with $\Delta\subscript{h} u\subscript{i,j} = \frac{1}{h^2} (4u\subscript{i,j} - u\subscript{i+1,j} - u\subscript{i-1,j} - u\subscript{i,j+1} - u\subscript{i,j-1})$.
+
+* This problem reduces to the linear system $A\vec{u} = \vec{b}$,
+where the matrix $A$ is pentadiagonal.
+
+* It can be shown that the five-point Laplacian is a method of second order.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Five-point Laplacian Example
+
+* PDE: $\Delta u = e^{-\frac{x^2 + y^2}{2}} (x^2 + y^2 - 2)$,
+* on the rectangular domain $[-1,1]\times[-5,5]$,
+* with Dirichlet boundary conditions that agree with the exact solution $z = e^{-\frac{x^2 + y^2}{2}}$.
+
+```Ruby
+f = Proc.new { |x,y| Math::exp(-0.5*(x**2.0 + y**2.0)) * (x**2.0 + y**2.0 - 2.0) }
+bc = Proc.new { |x,y| Math::exp(-0.5*(x**2.0 + y**2.0)) }
+numsol = Poissons_eq.new(xrange: [-1.0,1.0], yrange: [-5.0, 5.0], 
+                         h: 0.2, bc: bc, f: f)
+```
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Five-point Laplacian Example
+
+![Five point Laplacian example figure](images/five-pt_laplacian.png?raw=true "five-pt_laplacian.png")
+          </script>
+        </section>
+      </section>
+
+      <section>
+        <section data-markdown>
+          <script type="text/template">
+##1D Linear Advection Equation
+
+  * PDE: $\frac{du}{dt} + a \frac{du}{dx} = 0$,
+  * on the domain: $x\subscript{min} < x < x\subscript{max}$ and $t\subscript{min} < t < t\subscript{max}$, 
+  * with periodic boundary consitions: $u(x\subscript{min},t) = u(x\subscript{max},t)$,
+  * with initial condition: $u(x,t\subscript{min}) = g(x)$.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+##1D Linear Advection Equation
+
+Four different numerical schemes are available in `spitzy`: 
+
+* [Upwind](http://en.wikipedia.org/wiki/Upwind_scheme)
+* Leapfrog 
+* [Lax-Wendroff](http://en.wikipedia.org/wiki/Lax%E2%80%93Wendroff_method) 
+* [Lax-Friedrichs](http://en.wikipedia.org/wiki/Lax%E2%80%93Friedrichs_method)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Upwind
+
+* Consider the finite difference representation of the PDE:
+$$\frac{u\subscript{j}^{n+1} - u\subscript{j}^n}{\Delta t} = -a \frac{u\subscript{j}^{n} - u\subscript{j-1}^n}{\Delta x} + \mathcal{O}(\Delta t, \Delta x), \quad a>0.$$
+
+* Consequently, the Upwind scheme is given by the explicit formula:
+$$u\subscript{j}^{n+1} = u\subscript{j}^n -\frac{a\Delta t}{\Delta x}(u\subscript{j}^n - u\subscript{j-1}^n), \quad a > 0.$$
+
+* This is a first-order methods, as is clear by its derivation.
+
+* Conditional stability: $\left| \frac{a\Delta t}{\Delta x} \right| \leq 1$ ([CFL condition](http://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition)).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+###Lax-Friedrichs 
+
+* The Lax-Friedrichs scheme is an explicit first-order method of the form:
+$$u\subscript{i}^{n+1} = \frac{1}{2}(u\subscript{i+1}^n + u\subscript{i-1}^n) - a\frac{\Delta t}{2\,\Delta x}(u\subscript{i+1}^n - u\subscript{i-1}^n).$$
+
+* It is derived from the following forward-in-time-centered-in-space representation of the PDE:
+$$\frac{u\subscript{i}^{n+1} - \frac{1}{2}(u\subscript{i+1}^n + u\subscript{i-1}^n)}{\Delta t} + a\frac{u\subscript{i+1}^n - u\subscript{i-1}^n}{2\,\Delta x} = 0.$$
+
+* First-order in time, second order in space.
+
+* Conditional stability: $\left| \frac{a\Delta t}{\Delta x} \right| \leq 1$ ([CFL condition](http://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition)).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Leapfrog
+
+* The Leapfrog method achievs a second-order accuracy in time by using the centered difference
+$$\frac{du}{dt} = \frac{u\subscript{j}^{n+1} - u\subscript{j}^{n-1}}{2 \Delta t} + \mathcal{O}(\Delta t^2).$$
+
+* The resulting Leapfrog scheme, which is second-order in time and space, is
+$$u\subscript{j}^{n+1} = u\subscript{j}^{n-1} - a\frac{\Delta t}{\Delta x}(u\subscript{j+1}^n - u\subscript{j-1}^n).$$
+
+* Conditional stability: $\left| \frac{a\Delta t}{\Delta x} \right| \leq 1$ ([CFL condition](http://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition)).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Lax-Wendroff
+
+* Second order (in space and time) explicit method:
+$$u\subscript{i}^{n+1} = u\subscript{i}^n -\frac{a\Delta t}{2\Delta x}\left(u\subscript{i+1}^n-u\subscript{i-1}^n\right) + \frac{a^2\Delta t^2}{2\Delta x^2}\left(u\subscript{i+1}^n-2u\subscript{i}^n+u\subscript{i-1}^n\right).$$
+
+* Conditional stability: $\left| \frac{a\Delta t}{\Delta x} \right| \leq 1$ ([CFL condition](http://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition)).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Lax-Wendroff Derivation
+
+1. Use Lax-Friedrichs evaluations at half steps $t\subscript{n+1/2}$ and $x\subscript{n+1/2}$:
+$$u\subscript{i+1/2}^{n+1/2} = \frac{1}{2}(u\subscript{i+1}^n + u\subscript{i}^n) - \frac{\Delta t}{2\,\Delta x}( f( u\subscript{i+1}^n ) - f( u\subscript{i}^n ) ),$$
+$$u\subscript{i-1/2}^{n+1/2} = \frac{1}{2}(u\subscript{i}^n + u\subscript{i-1}^n) - \frac{\Delta t}{2\,\Delta x}( f( u\subscript{i}^n ) - f( u\subscript{i-1}^n ) ).$$
+
+2. Followed by a Leapfrog "half step":
+$$u\subscript{i}^{n+1} = u\subscript{i}^n - \frac{\Delta t}{\Delta x} \left( f(u\subscript{i+1/2}^{n+1/2}) - f(u\subscript{i-1/2}^{n+1/2}) \right).$$
 
           </script>
         </section>
 
         <section data-markdown>
           <script type="text/template">
+### Advection Equation Example
 
+We want to solve the 1D linear advection equation given as:
+
+  * PDE: $\frac{du}{dt} + a \frac{du}{dx} = 0$,
+  * on the domain: $0 < x < 1$ and $0 < t < 10$, 
+  * with periodic boundary consitions: $u(0,t) = u(1, t)$,
+  * with initial condition: $u(x,0) = \cos(2\pi x) + \frac{1}{5}\cos(10\pi x)$.
+
+```Ruby
+require 'spitzy'
+ic = proc { |x| Math::cos(2*Math::PI*x) + 0.2*Math::cos(10*Math::PI*x) }
+numsol = AdvectionEq.new(xrange: [0.0,1.0], trange: [0.0, 10.0], 
+                         dx: 1.0/1001, dt: 0.95/1001, a: 1.0,
+                         method: :upwind, &ic)
+```
           </script>
         </section>
 
         <section data-markdown>
           <script type="text/template">
+### Advection Equation Example
 
+* We can get the equation solved by `numsol` in form of a character string using the method `#equation`. Similarly we can access the number of $x$-steps `#mx` and $t$-steps `#mt`, as well as various other attributes.
+
+* Using Fourier methods we compute the exact solution of the PDE to be $\cos(2\pi (x-t)) + 0.2\cos(10\pi (x-t))$. We can use it to check the accuracy of the numerical solution.
+
+![Advection equation example output](images/advection_equation_example_output.png?raw=true "Advection equation example output")
           </script>
         </section>
 
         <section data-markdown>
           <script type="text/template">
+### Advection Equation Example
 
+![Advection equation example plot](images/advection_equation_example_plot.png?raw=true "Advection equation example plot")
+          </script>
+        </section>
+      </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Future Work
+
+* Implement automated tests for all methods (!).
+
+* Implement new methods, and improve some of the existing ones.
+
+* Set up interfaces to publicly available advances and well-tested numerical codes, written in C or FORTRAN, such as the ones available from
+[GAMS](http://gams.nist.gov/) or [NETLIB](www.netlib.org).
           </script>
         </section>
 
         <section data-markdown>
           <script type="text/template">
+## Thank you!
 
+* Project repository: <https://github.com/agisga/spitzy.git>
+
+* Project report/documentation: <http://agisga.github.io/spitzy/documentation/>
+
+* Contributions are very welcome!
           </script>
         </section>
-
-        <section data-markdown>
-          <script type="text/template">
-
-          </script>
-        </section>
-
-        <section data-markdown>
-          <script type="text/template">
-
-          </script>
-        </section>
-
-
-        <section data-markdown>
-          <script type="text/template">
-
-          </script>
-        </section>
-
 
 			</div>
 		</div>
