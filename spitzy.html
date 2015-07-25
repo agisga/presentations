@@ -71,7 +71,7 @@
             <script type="text/template">
 ## What/Who is spitzy?
 
-![Spitzy](images/spitzy.jpg?raw=true "spitzy.jpg")
+![Spitzy](images/spitzy/spitzy.jpg?raw=true "spitzy.jpg")
 
 Spitzy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $\equiv$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*YZTIPS*
 
@@ -103,7 +103,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![Ruby logo](images/ruby.png?raw=true "ruby.png")
+![Ruby logo](images/spitzy/ruby.png?raw=true "ruby.png")
 
 <https://www.ruby-lang.org/en/documentation/success-stories/>
             </script>
@@ -113,7 +113,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![Ruby on Rails logo](images/Ruby_on_Rails-logo.jpeg?raw=true "Ruby_on_Rails-logo.png")
+![Ruby on Rails logo](images/spitzy/Ruby_on_Rails-logo.jpeg?raw=true "Ruby_on_Rails-logo.png")
 
 <http://thecoderfactory.com/posts/top-15-sites-built-with-ruby-on-rails>
             </script>
@@ -123,7 +123,7 @@ To my knowledge, apart from an [interface with the DASPK Fortran library](https:
             <script type="text/template">
 ## Who is using Ruby?
 
-![SciRuby logo](images/sciruby_logo.png?raw=true "sciruby_logo.png")
+![SciRuby logo](images/spitzy/sciruby_logo.png?raw=true "sciruby_logo.png")
 
 <http://sciruby.com/>
             </script>
@@ -188,7 +188,7 @@ dopri_sol = Ode.new(xrange: [0.0,10.0], dx: 1.5, yini: 1.0,
             <script type="text/template">
 ### Dormand-Prince Example
 
-![Dormand-Prince example plot](images/dopri2.png?raw=true "Dormand-Prince example plot")
+![Dormand-Prince example plot](images/spitzy/dopri2.png?raw=true "Dormand-Prince example plot")
             </script>
           </section>
         </section>
@@ -224,7 +224,7 @@ euler_sol = Ode.new(xrange: [1.0,4.0], dx: 0.01,
           <section data-markdown>
             <script type="text/template">
 ### Forward Euler Example
-![Euler method example plot](images/euler_plot.png?raw=true "Euler method example plot")
+![Euler method example plot](images/spitzy/euler_plot.png?raw=true "Euler method example plot")
             </script>
           </section>
         </section>
@@ -265,7 +265,7 @@ exact_sol = ab2_sol1.x.map { |tt| Math::exp(-(tt**2)) }
             <script type="text/template">
 ### Second-Order Adams-Bashforth Example
 
-![Adams-Bashforth example plot](images/ab2_plot.png?raw=true "Adams-Bashforth example plot")
+![Adams-Bashforth example plot](images/spitzy/ab2_plot.png?raw=true "Adams-Bashforth example plot")
             </script>
           </section>
         </section>
@@ -317,7 +317,7 @@ $$A\vec{u} = \vec{f}.$$
 
 * Here, we only consider polynomials of degree 1, that is, continuous piecewise linear functions.
 
-![Piecewise linear basis functions](images/fin_elt_basis_func_small.png?raw=true "Piecewise linear basis functions")
+![Piecewise linear basis functions](images/spitzy/fin_elt_basis_func_small.png?raw=true "Piecewise linear basis functions")
 <cite>"<a href="http://commons.wikimedia.org/wiki/File:Finite_element_method_1D_illustration2.svg#/media/File:Finite_element_method_1D_illustration2.svg">Finite element method 1D illustration2</a>" by <a href="//commons.wikimedia.org/wiki/User:Krishnavedala" title="User:Krishnavedala">Krishnavedala</a> - <span class="int-own-work" lang="en">Own work</span>. Licensed under <a title="Creative Commons Attribution-Share Alike 3.0" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a> via <a href="//commons.wikimedia.org/wiki/">Wikimedia Commons</a>.
           </script>
         </section>
@@ -349,7 +349,7 @@ bvp_sol = Bvp.new(xrange: xrange, mx: 100, bc: bc,
           <script type="text/template">
 ### Linear Finite Element Galerkin Example
 
-![BVP example 2 plot](images/bvp2.png?raw=true "BVP example 2 plot")
+![BVP example 2 plot](images/spitzy/bvp2.png?raw=true "BVP example 2 plot")
           </script>
         </section>
       </section>
@@ -407,7 +407,7 @@ numsol = Poissons_eq.new(xrange: [-1.0,1.0], yrange: [-5.0, 5.0],
           <script type="text/template">
 ### Five-point Laplacian Example
 
-![Five point Laplacian example figure](images/five-pt_laplacian.png?raw=true "five-pt_laplacian.png")
+![Five point Laplacian example figure](images/spitzy/five-pt_laplacian.png?raw=true "five-pt_laplacian.png")
           </script>
         </section>
       </section>
@@ -537,7 +537,7 @@ numsol = AdvectionEq.new(xrange: [0.0,1.0], trange: [0.0, 10.0],
 
 * Using Fourier methods we compute the exact solution of the PDE to be $\cos(2\pi (x-t)) + 0.2\cos(10\pi (x-t))$. We can use it to check the accuracy of the numerical solution.
 
-![Advection equation example output](images/advection_equation_example_output.png?raw=true "Advection equation example output")
+![Advection equation example output](images/spitzy/advection_equation_example_output.png?raw=true "Advection equation example output")
           </script>
         </section>
 
@@ -545,7 +545,7 @@ numsol = AdvectionEq.new(xrange: [0.0,1.0], trange: [0.0, 10.0],
           <script type="text/template">
 ### Advection Equation Example
 
-![Advection equation example plot](images/advection_equation_example_plot.png?raw=true "Advection equation example plot")
+![Advection equation example plot](images/spitzy/advection_equation_example_plot.png?raw=true "Advection equation example plot")
           </script>
         </section>
       </section>
