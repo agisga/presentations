@@ -79,6 +79,151 @@
           </script>
         </section>
 
+
+        <section data-markdown>
+          <script type="text/template">
+## The model selection problem
+
+* Linear model $\mathbf{y}=X\mathbf{b} + \mathbf{z}$, where $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{z}\sim \mathrm{N}(0,\sigma^2 I)$
+* Possibly with $n < p$
+* _Estimation problem_: Find best predictions for $\mathbf{y}$ or $\mathbf{b}$
+* _Testing problem_: Test which $b_i$ are non-zero
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## The model selection problem
+
+### In genetics
+
+* GWAS 
+* ...
+* ...
+          </script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+### $\ell_0$ regularization (e.g. $C_p$ by Mallows, 1973, and AIC by Akaike, 1974)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \lVert\mathbf{y} - X\mathbf{b}\rVert^2\subscript{2} + \lambda \lVert\mathbf{b}\rVert\subscript{0}$$
+
+* $\ell_0$ norm is non-convex $\leadsto$ Not practical for large $p$ (e.g. for $p=100$)
+
+### $\ell_1$ regularization (e.g. LASSO by Tibshirani, 1994)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \lVert\mathbf{y} - X\mathbf{b}\rVert\subscript{2}^2 + \lambda\lVert\mathbf{b}\rVert\subscript{1}$$
+
+* Small $\lambda$ leads to the selection of too many irrelevant parameters (ineffective in sparse settings).
+* Large $\lambda$ yields little power as well as a large bias.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## SLOPE
+
+### Sorted L-One Penalized Estimation (Bogdan, van den Berg, Su, Candes, 2013)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \lVert \mathbf{y} - X\mathbf{b}\rVert\subscript{2}^2 + \sum\subscript{i=1}^p \lambda\subscript{i} |\mathbf{b}|\subscript{(i)}$$
+
+* _Regularizing sequence_ $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \ldots \geq \lambda\subscript{p} \geq 0$
+
+* $|b|\subscript{(1)} \geq |b|\subscript{(2)} \geq \ldots \geq |b|\subscript{(p)}$ denotes the order statistic of the magnitudes of the vector $\mathbf{b}\in\mathbb{R}^p$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## SLOPE References
+
+* M. Bogdan, E. van den Berg, W. Su, and E. Candes.  _Statistical estimation and testing via the sorted L1 norm_. ArXiv e-prints, Oct. 2013.
+* M. Bogdan, E. van den Berg, C. Sabatti, W. Su, and E. J. Candes. _SLOPE – Adaptive Variable Selection via Convex Optimization_. ArXiv e-prints, July 2014.
+* E. Candes and W. Su. _SLOPE is Adaptive to Unknown Sparsity and Asymptotically Minimax_. ArXiv e-prints, Mar. 2015.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## SLOPE
+
+* SLOPE is convex.
+* Computational cost is roughly the same as for the LASSO.
+* Adaptivity to the sparsity level: the cost of including new variables decreases as more variables are added to the model.
+* Related to the BHq procedure (Y. Benjamini and Y. Hochberg, 1995) with similar FDR control properties.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## False discovery rate (FDR)
+
+Essentially, the SLOPE procedure is testing the $p$ hypotheses $H\subscript{i} : b\subscript{i} = 0$ for $i = 1,\ldots,p$, where $H\subscript{i}$ is rejected iff $\hat{b}\subscript{i}\neq 0$. 
+
+SLOPE aims to control the FDR, i.e. the proportion of the irrelevant among all selected predictors.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+Let $R =$ #rejections, $V =$ #false rejections, $p\subscript{0} =$ #true null hypotheses.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+### Theorem (Bogdan, van den Berg, Su, Candes, 2013)
+
+Assume an orthogonal design with i.i.d. $\mathrm{N}(0,1)$ errors, and set $\lambda\subscript{i} = \Phi^{-1}\left( 1 - q\frac{i}{2p} \right)$. Then the FDR of SLOPE obeys
+
+$$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max{R,1}} \right) \leq q\frac{p\subscript{0}}{p}.$$
+
+---------------------------------------------------------------------------------------------------------------------------------------
+          </script>
+        </section>
+        
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+![orthogonal design SLOPE FDR plot](images/GroupSLOPE/FDRandPower_OrthogonalDesign.png?raw=true)
+
+$500\times 500$ orthogonal design regression problem, averaged over 1000 replications at each sparsity level
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Nonorthogonal designs
+
+* Theorem is not valid for nonorthogonal design matrices.
+
+* The regularizing sequence can be adjusted:
+
+$$\begin{eqnarray}
+  \lambda\subscript{1} &=& \lambda\subscript{1}^{\mathrm{(BH)}},\\\\\\
+  \lambda\subscript{i} &=& \lambda\subscript{i}^{\mathrm{(BH)}} \sqrt{ 1 + w(i-1) },
+\end{eqnarray}$$
+
+where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \right)$ and $w(i) \approx \mathrm{E}\left[ \left( X\subscript{i}^T X\subscript{S} (X\subscript{S}^T X\subscript{S})^{-1} \lambda\subscript{S} \right)^2 \right]$ with $S = \mathrm{supp}(\mathbf{b})$.
+
+* $w(i)$ can be approximated with a Monte Carlo simulation.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Unknown noise level and intercept
+
+* SLOPE does not include an intercept term $b\subscript{0}$ and presupposes the knowledge of $\sigma^2$.
+
+* We use the following iterative procedure in order to estimate $b\subscript{0}$ and $\sigma^2$:
+
+  1. Starts with $\hat{b}\subscript{0}^{(0)}$ and $\hat{\sigma}^{(0)}$ equal to the sample mean and sample standard deviation of $\mathbf{y}$.
+  2. $\hat{b}\subscript{0}^{(k)}$ and $\hat{\sigma}^{(k)}$ are computed via linear regression on $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$, which is identified by SLOPE with $\hat{b}\subscript{0}^{(k-1)}$ and $\hat{\sigma}^{(k-1)}$.
+  3. Repeat step 2 until $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k)}\right) = \mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$.
+          </script>
+        </section>
+
         <section data-markdown>
           <script type="text/template">
 ## Part 2. Group SLOPE
@@ -324,9 +469,10 @@ For a general model matrix $X$ the above motivates the following approach:
 
 ### Group SLOPE
 
-<img src="images/GroupSLOPE/GroupSLOPE_FDRandPower_highWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![Group SLOPE FDR plot](images/GroupSLOPE/GroupSLOPE_FDRandPower_highWithinGrpCor.png)
 
-Very high within group correlations ($\approx 0.99$) and very low between group correlations ($\approx 0.05$) of the predictor variables.
+* within group correlations $\approx 0.99$
+* between group correlations $\approx 0.05$
             </script>
           </section>
           
@@ -336,9 +482,10 @@ Very high within group correlations ($\approx 0.99$) and very low between group 
 
 ### CV Group LASSO
 
-<img src="images/GroupSLOPE/CVGroupLASSO_FDRandPower_highWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![CV Group LASSO FDR plot](images/GroupSLOPE/CVGroupLASSO_FDRandPower_highWithinGrpCor.png)
 
-Very high within group correlations ($\approx 0.99$) and very low between group correlations ($\approx 0.05$) of the predictor variables.
+* within group correlations $\approx 0.99$ 
+* between group correlations $\approx 0.05$
             </script>
           </section>
 
@@ -348,9 +495,10 @@ Very high within group correlations ($\approx 0.99$) and very low between group 
 
 ### Group SLOPE
 
-<img src="images/GroupSLOPE/GroupSLOPE_FDRandPower_moderateWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![Group SLOPE FDR plot](images/GroupSLOPE/GroupSLOPE_FDRandPower_moderateWithinGrpCor.png)
 
-Moderately large within group correlations ($\approx 0.7$) and moderate between group correlations ($\approx 0.3$) of the predictor variables.
+* within group correlations $\approx 0.7$
+* between group correlations $\approx 0.3$
             </script>
           </section>
 
@@ -360,9 +508,10 @@ Moderately large within group correlations ($\approx 0.7$) and moderate between 
 
 ### CV Group LASSO
 
-<img src="images/GroupSLOPE/CVGroupLASSO_FDRandPower_moderateWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![CV Group LASSO FDR plot](images/GroupSLOPE/CVGroupLASSO_FDRandPower_moderateWithinGrpCor.png)
 
-Moderately large within group correlations ($\approx 0.7$) and moderate between group correlations ($\approx 0.3$) of the predictor variables.
+* within group correlations $\approx 0.7$
+* between group correlations $\approx 0.3$
             </script>
           </section>
           
@@ -370,9 +519,10 @@ Moderately large within group correlations ($\approx 0.7$) and moderate between 
             <script type="text/template">
 ## Simulation results
 
-<img src="images/GroupSLOPE/NumSelected_highWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![Number of selected vs significant plot](images/GroupSLOPE/NumSelected_highWithinGrpCor.png)
 
-Very high within group correlations ($\approx 0.99$) and very low between group correlations ($\approx 0.05$) of the predictor variables.
+* within group correlations $\approx 0.99$ 
+* between group correlations $\approx 0.05$
             </script>
           </section>
 
@@ -380,9 +530,10 @@ Very high within group correlations ($\approx 0.99$) and very low between group 
             <script type="text/template">
 ## Simulation results
 
-<img src="images/GroupSLOPE/NumSelected_moderateWithinGrpCor.png" style="background:none; border:none; box-shadow:none;">
+![Number of selected vs significant plot](images/GroupSLOPE/NumSelected_moderateWithinGrpCor.png)
 
-Moderately large within group correlations ($\approx 0.7$) and moderate between group correlations ($\approx 0.3$) of the predictor variables.
+* within group correlations $\approx 0.7$ 
+* between group correlations $\approx 0.3$
             </script>
           </section>
 			</div>
