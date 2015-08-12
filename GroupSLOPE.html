@@ -66,40 +66,27 @@
 
         <section data-markdown>
           <script type="text/template">
-## Part 1. The SLOPE method
+## Introduction
 
-0. Model formulation 
-1. SLOPE under orthogonal designs
-2. SLOPE under non-orthogonal designs
-3. Dealing with unknown noise level and intercept
-4. Application to DNA sequence data
+### The model selection problem
 
-<br>
-... *to be written sometime before September* ...
-          </script>
-        </section>
-
-
-        <section data-markdown>
-          <script type="text/template">
-## The model selection problem
-
-* Linear model $\mathbf{y}=X\mathbf{b} + \mathbf{z}$, where $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{z}\sim \mathrm{N}(0,\sigma^2 I)$
-* Possibly with $n < p$
-* _Estimation problem_: Find best predictions for $\mathbf{y}$ or $\mathbf{b}$
-* _Testing problem_: Test which $b_i$ are non-zero
+* Linear model $\mathbf{y}=X\mathbf{b} + \mathbf{z}$, where $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{z}\sim \mathrm{N}(0,\sigma^2 I)$.
+* Possibly $n < p$.
+* _Estimation_: Find best predictions for $\mathbf{y}$ or $\mathbf{b}$.
+* _Feature selection_: Find which $b_i$ are non-zero.
           </script>
         </section>
 
         <section data-markdown>
           <script type="text/template">
-## The model selection problem
+## Introduction
 
-### In genetics
+### The model selection problem in genetics
 
-* GWAS 
-* ...
-* ...
+* Genomic, proteomic, epigenomic, metabolomic, etc. data are typically high-dimensional and suffer from the curse of dimensionality.
+* Elimination of noisy or redundant features leads to more accurate prediction. 
+* Prediction of a disease phenotype based on a handful of features is needed for inexpensive diagnosis.
+* Feature selection can lead to better understanding of the underlying biology.
           </script>
         </section>
         <section data-markdown>
@@ -135,8 +122,6 @@ $$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \lVert \mathbf{y} - X\ma
 
         <section data-markdown>
           <script type="text/template">
-## SLOPE References
-
 * M. Bogdan, E. van den Berg, W. Su, and E. Candes.  _Statistical estimation and testing via the sorted L1 norm_. ArXiv e-prints, Oct. 2013.
 * M. Bogdan, E. van den Berg, C. Sabatti, W. Su, and E. J. Candes. _SLOPE – Adaptive Variable Selection via Convex Optimization_. ArXiv e-prints, July 2014.
 * E. Candes and W. Su. _SLOPE is Adaptive to Unknown Sparsity and Asymptotically Minimax_. ArXiv e-prints, Mar. 2015.
@@ -175,7 +160,7 @@ Let $R =$ #rejections, $V =$ #false rejections, $p\subscript{0} =$ #true null hy
 
 Assume an orthogonal design with i.i.d. $\mathrm{N}(0,1)$ errors, and set $\lambda\subscript{i} = \Phi^{-1}\left( 1 - q\frac{i}{2p} \right)$. Then the FDR of SLOPE obeys
 
-$$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max{R,1}} \right) \leq q\frac{p\subscript{0}}{p}.$$
+$$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max(R,1)} \right) \leq q\frac{p\subscript{0}}{p}.$$
 
 ---------------------------------------------------------------------------------------------------------------------------------------
           </script>
@@ -201,12 +186,12 @@ $500\times 500$ orthogonal design regression problem, averaged over 1000 replica
 
 $$\begin{eqnarray}
   \lambda\subscript{1} &=& \lambda\subscript{1}^{\mathrm{(BH)}},\\\\\\
-  \lambda\subscript{i} &=& \lambda\subscript{i}^{\mathrm{(BH)}} \sqrt{ 1 + w(i-1) },
+  \lambda\subscript{i} &=& \lambda\subscript{i}^{\mathrm{(BH)}} \sqrt{ 1 + \omega(i-1) },
 \end{eqnarray}$$
 
-where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \right)$ and $w(i) \approx \mathrm{E}\left[ \left( X\subscript{i}^T X\subscript{S} (X\subscript{S}^T X\subscript{S})^{-1} \lambda\subscript{S} \right)^2 \right]$ with $S = \mathrm{supp}(\mathbf{b})$.
+where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \right)$ and $\omega(i) \approx \mathrm{E}\left[ \left( X\subscript{i}^T X\subscript{S} (X\subscript{S}^T X\subscript{S})^{-1} \lambda\subscript{S} \right)^2 \right]$ with $S = \mathrm{supp}(\mathbf{b})$.
 
-* $w(i)$ can be approximated with a Monte Carlo simulation.
+* $\omega(i)$ can be approximated with a Monte Carlo simulation.
           </script>
         </section>
 
@@ -226,12 +211,73 @@ where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \
 
         <section data-markdown>
           <script type="text/template">
-## Part 2. Group SLOPE
+## Application to genetics
 
-1. Model motivation and formulation 
-2. Computational algorithms
-3. Regularizing sequence
-4. Simulation results
+### Simulation of realistic DNA sequence data
+
+* [SeqSIMLA2](http://seqsimla.sourceforge.net/) (Chung et al. 2015) and [cosi](http://www.broadinstitute.org/~sfs/cosi/) (Schaffner et al. 2005) were used to simulate DNA sequence data that closely resemble empirical data.
+* Each of 100 simulated data sets consists of 5330 SNPs (single nucleotide polymorphism) for 2000 unrelated individuals. 
+* The phenotype is a quantitative trait simulated under the additive model in SeqSIMLA2. 
+* Significant SNPs were randomly selected among SNPs with MAF (minor allele frequency) of at least 0.01
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Simulation of realistic DNA sequence data
+
+We consider two scenarios:
+
+1. 5 significant SNPs, each explaining 10% of the phenotypic variance; the remaining 50% of the variance due to environmental effects; no polygenic effects.
+
+2. 20 significant SNPs, each explaining 5% of the variance; no environmental or polygenic effects.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Data pruning
+
+* Even with $\lambda\subscript{1}, \lambda\subscript{2}, \dots, \lambda\subscript{p}$ adjusted as described previously, SLOPE cannot handle high correlations between predictors well.
+* Data is pruned such that the maximal pair-wise correlation between predictors does not exceed 0.3, by iteratively removing columns from the design matrix based on their average pair-wise correlation and their univariate association with the response. 
+
+<br>
+$\leadsto$ Of the 5330 SNPs approximately 320 remain in the data, and approximately half of the significant SNPs are discarded... 
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Results
+
+* We compare the performance of SLOPE to the LASSO.
+* The LASSO regularization parameter $\lambda$ is selected by ten-fold cross-validation.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics Results
+
+![first data type - SLOPE results plot](images/GroupSLOPE/unrelated_individuals_results_5signif.png)
+
+5 significant SNPs, each explaining 10% of the phenotypic variance
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics Results
+
+![second data type - SLOPE results plot](images/GroupSLOPE/unrelated_individuals_results_20signif.png)
+
+20 significant SNPs, each explaining 5% of the phenotypic variance
           </script>
         </section>
 
@@ -261,7 +307,7 @@ $\Rightarrow$ Select or drop entire groups rather than individual significant pr
 
           <section data-markdown>
             <script type="text/template">
-### Group LASSO (M. Yuan and Y. Lin (2006), and others)
+### Group LASSO (M. Yuan and Y. Lin, 2006, and others)
 
 * $\mathbf{y} = X\mathbf{b} + \mathbf{e}$, $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{e}\sim\mathrm{N}(0, \sigma_e^2 I)$. 
 
@@ -394,7 +440,7 @@ where $\mathrm{prox}\subscript{J\subscript{\lambda}}$ is the prox function of SL
             <script type="text/template">
 ## Regularizing sequence
 
-* In order to (approxiametely) control the false discovery rate, we need to select suitable $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \dots \geq \lambda\subscript{J}$.
+* In order to (approximately) control the false discovery rate, we need to select suitable $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \dots \geq \lambda\subscript{J}$.
 
 * Can procedures available for the SLOPE method be generalized for Group SLOPE?
 
@@ -534,6 +580,40 @@ For a general model matrix $X$ the above motivates the following approach:
 
 * within group correlations $\approx 0.7$ 
 * between group correlations $\approx 0.3$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+* SLOPE outperformed LASSO in terms of FDR as well as prediction MSE while having the same detection power.
+* However, FDR of the SLOPE largely exceeded the nominal level of 0.1...
+  - Possibly due to the way in which unknown variance and intercept were treated.
+  - Possibly the signal strength was too weak.
+  - Possibly data simulated by SeqSIMLA does not match SLOPE in some other way.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the FDR often exceeds the aimed level significantly in our simulations.
+* Same appears to be true for Group SLOPE.
+* In many genomic instances the solution resides at these very sparse levels...
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+Similar to SLOPE, in considered settings...
+
+* Group SLOPE adapts the number of selected groups to the unknown true number of significant groups of predictors. 
+* Group SLOPE keeps the false discovery rate below a specified level.
+* Group LASSO has a much higher FDR and a lower detection power than Group SLOPE.
             </script>
           </section>
 			</div>
