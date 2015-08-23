@@ -172,7 +172,17 @@ $$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max(R,1)} \right) \leq q\frac{p\subs
 
 ![orthogonal design SLOPE FDR plot](images/GroupSLOPE/FDRandPower_OrthogonalDesign.png?raw=true)
 
-$500\times 500$ orthogonal design regression problem, averaged over 1000 replications at each sparsity level
+$500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 replications at each sparsity level
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+![orthogonal design SLOPE FDR plot with strong signal](images/GroupSLOPE/FDRandPower_OrthogonalDesign_strong_signal.png?raw=true)
+
+$5 \sqrt{2\log(n)}$ signal strength (5 times previous)
           </script>
         </section>
 
@@ -199,12 +209,14 @@ where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \
           <script type="text/template">
 ## Unknown noise level and intercept
 
-* SLOPE does not include an intercept term $b\subscript{0}$ and presupposes the knowledge of $\sigma^2$.
+* SLOPE does not include an intercept term and presupposes the knowledge of the noise level $\sigma^2$.
 
-* We use the following iterative procedure in order to estimate $b\subscript{0}$ and $\sigma^2$:
+* Estimation of the intercept can be avoided by standardizing the response as well as the predictor variables.
 
-  1. Starts with $\hat{b}\subscript{0}^{(0)}$ and $\hat{\sigma}^{(0)}$ equal to the sample mean and sample standard deviation of $\mathbf{y}$.
-  2. $\hat{b}\subscript{0}^{(k)}$ and $\hat{\sigma}^{(k)}$ are computed via linear regression on $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$, which is identified by SLOPE with $\hat{b}\subscript{0}^{(k-1)}$ and $\hat{\sigma}^{(k-1)}$.
+* $\sigma^2$ can be estimated by the following iterative procedure:
+
+  1. Set $\hat{\sigma}^{(0)}$ equal to the sample standard deviation of $\mathbf{y}$.
+  2. Update $\hat{\sigma}^{(k)}$ using linear regression on $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$, which is identified by SLOPE with $\hat{\sigma}^{(k-1)}$.
   3. Repeat step 2 until $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k)}\right) = \mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$.
           </script>
         </section>
@@ -580,10 +592,7 @@ For a general model matrix $X$ the above motivates the following approach:
 ## Conclusion
 
 * SLOPE outperformed LASSO in terms of FDR as well as prediction MSE while having the same detection power.
-* However, FDR of the SLOPE largely exceeded the nominal level of 0.1...
-  - Possibly due to the way in which unknown variance and intercept were treated.
-  - Possibly the signal strength was too weak.
-  - Possibly data simulated by SeqSIMLA does not match SLOPE in some other way.
+* However, FDR of the SLOPE largely exceeded the nominal level of 0.1. Possibly data simulated by SeqSIMLA does not match SLOPE in some way.
             </script>
           </section>
 
@@ -591,9 +600,10 @@ For a general model matrix $X$ the above motivates the following approach:
             <script type="text/template">
 ## Conclusion
 
-* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the FDR often exceeds the aimed level significantly in our simulations.
+* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the FDR is quite unstable, and often exceeds the aimed level significantly in our simulations.
 * Same appears to be true for Group SLOPE.
-* In many genomic instances the solution resides at these very sparse levels...
+* In many genomic instances the solution resides at these very sparse levels. This might require special care in future applications.
+
             </script>
           </section>
 
@@ -618,6 +628,28 @@ Similar to SLOPE, in considered settings...
 * Different ways of dividing the data into blocks
 * Incorporation of other types of prior knowledge, e.g. family relationships among the subjects as random effects in the model
 * Ways to construct the regularizing sequence $\lambda\subscript{1}, \lambda\subscript{2}, \dots, \lambda\subscript{p}$, which are less computationally expensive than the Monte Carlo approach
+            </script>
+          </section>
+
+
+          <section data-markdown>
+            <script type="text/template">
+## Acknowledgments
+
+* My coauthors are Shaolong Cao\* and Yu-Ping Wang\*.
+
+* We would also like to thank Malgorzata Bogdan\*\* and Weijie Su\*\*\* (two of the original authors of SLOPE) for helpful comments.
+
+<br>
+
+-------------------------------------
+<P ALIGN="left"> 
+
+\* Tulane University, Department of Biomedical Engineering <br>
+\*\* Wroclaw University of Technology, Department of Mathematics and Computer Science <br>
+\*\*\* Stanford University, Department of Statistics
+
+</P>
             </script>
           </section>
 			</div>
