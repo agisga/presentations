@@ -172,7 +172,7 @@ $$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max(R,1)} \right) \leq q\frac{p\subs
 
 ![orthogonal design SLOPE FDR plot](images/GroupSLOPE/FDRandPower_OrthogonalDesign.png?raw=true)
 
-$500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 replications at each sparsity level
+$500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 replications at each sparsity level, bars for $\pm$ SD
           </script>
         </section>
 
@@ -529,6 +529,7 @@ For a general model matrix $X$ the above motivates the following approach:
 
 * within group correlations $\approx 0.99$
 * between group correlations $\approx 0.05$
+* bars correspond to $\pm$ SD
             </script>
           </section>
           
@@ -540,6 +541,7 @@ For a general model matrix $X$ the above motivates the following approach:
 
 * within group correlations $\approx 0.99$ 
 * between group correlations $\approx 0.05$
+* bars correspond to $\pm$ SD
             </script>
           </section>
 
@@ -551,6 +553,7 @@ For a general model matrix $X$ the above motivates the following approach:
 
 * within group correlations $\approx 0.7$
 * between group correlations $\approx 0.3$
+* bars correspond to $\pm$ SD
             </script>
           </section>
 
@@ -562,6 +565,7 @@ For a general model matrix $X$ the above motivates the following approach:
 
 * within group correlations $\approx 0.7$
 * between group correlations $\approx 0.3$
+* bars correspond to $\pm$ SD
             </script>
           </section>
           
@@ -600,7 +604,7 @@ For a general model matrix $X$ the above motivates the following approach:
             <script type="text/template">
 ## Conclusion
 
-* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the FDR is quite unstable, and often exceeds the aimed level significantly in our simulations.
+* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the false discovery proportion is quite unstable, and often exceeds the aimed level significantly in our simulations.
 * Same appears to be true for Group SLOPE.
 * In many genomic instances the solution resides at these very sparse levels. This might require special care in future applications.
 
