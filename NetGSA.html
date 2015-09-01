@@ -115,9 +115,9 @@
 
           <section data-markdown>
             <script type="text/template">
-##  NetGSA
+## Mixed linear model representation
 
-### Mixed linear model representation
+### Main idea
 
 Very simple graph:
 
@@ -129,11 +129,72 @@ $$\begin{eqnarray}
   X\subscript{3} &=& \rho\subscript{23} X\subscript{2} + \gamma\subscript{3} = \rho\subscript{23}\rho\subscript{12}\gamma\subscript{1} + \rho\subscript{23} \gamma\subscript{2} + \gamma\subscript{3}.
 \end{eqnarray}$$
 
-where $\gamma\subscript{i} \sim N(\beta\subscript{i}, \sigma\subscript{\gamma}^2)$.
+where $\gamma\subscript{i} \sim N(\mu\subscript{i}, \sigma\subscript{\gamma}^2)$.
 
 <br>
-$$\Rightarrow X = \Lambda \gamma, \quad \gamma \sim N(\beta, \sigma\subscript{\gamma}^2 I).$$
+$$\Rightarrow X = \Lambda \gamma, \quad \gamma \sim N(\mu, \sigma\subscript{\gamma}^2 I).$$
 
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Mixed linear model representation
+
+### Main idea
+
+* Let $Y$ be the $i$th sample in the expression data.
+* Assume that $Y = X + \varepsilon$, with $X$ the signal and $\varepsilon \sim N(0, \sigma\subscript{\varepsilon}^2 I)$ the noise.
+* It follows that
+
+  $$Y = \Lambda \gamma + \varepsilon,$$
+
+  $$Y\sim N(\Lambda\mu, \sigma\subscript{\gamma}^2 \Lambda\Lambda^T + \sigma\subscript{\varepsilon}^2 I).$$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Mixed linear model representation
+
+### Main idea
+
+* Multiple experimental conditions, e.g. case &mdash; control:
+
+  $$\begin{eqnarray}
+  Y^C &=& \Lambda^C \gamma^C + \varepsilon, \quad \gamma^C &\sim& N(\mu^C, \sigma\subscript{\gamma}^2 I), \\\\\\
+  Y^T &=& \Lambda^T \gamma^T + \varepsilon, \quad \gamma^T &\sim& N(\mu^T, \sigma\subscript{\gamma}^2 I).
+  \end{eqnarray}$$
+
+* Let $\beta := (\mu^C, \mu^T)^T$, and rearrange $Y$, $\gamma$ and $\varepsilon$ into $np \times 1$ vectors, and redefine $\gamma$ such that $E(\gamma) = 0$. Then we obtain a linear mixed model:
+
+  <br>
+  $$Y = \Psi \beta + \Pi \gamma + \varepsilon,$$
+  <br>
+
+  where $\gamma \sim N(0, \sigma\subscript{\gamma}^2 I)$, $\Pi = I \otimes \Lambda \in \mathbb{R}^{np \times np}$, $\Psi = \chi \otimes \Lambda \in \mathbb{R}^{np \times 2p}$ ($\chi\in\mathbb{R}^{n\times 2}$ decodes membership in treatment or control group).
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Mixed linear model representation
+
+### Main idea
+
+Consider a subnetwork:
+
+![Simple network PNG](images/NetGSA/simple_subnetwork.png?raw=true)
+
+* Use the LMM framework to test whether a subnetwork differs w.r.t. the network structure or gene expression levels between cases and controls.
+
+* Any hypothesis test of the following form can be performed:
+
+  $$H\subscript{0} : l^T \beta = 0 \quad \mathrm{vs.} \quad H\subscript{1} : l^T \beta \neq 0.$$
+
+* The authors show how to find a contrast vector $l$ that includes the interaction between genes 2 and 3 and excludes gene 1.
+
+* The authors propose a $t$-test and an $F$-test whose degrees of freedom are approximated with the Satterthwaite method.
             </script>
           </section>
 
