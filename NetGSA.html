@@ -276,11 +276,66 @@ $$\Rightarrow X = \Lambda \gamma, \quad \gamma \sim N(\mu, \sigma\subscript{\gam
 
           <section data-markdown>
             <script type="text/template">
+## Network estimation under external information constrains
+
+* The correlation structure underlying a molecular network can be represented by a graph $G = (V, E)$.
+
+* The edge set $E$ is represented by the adjacency matrix $A$, where $A\subscript{ij} \in (-1, 1)$ represents the strength of association between the respective nodes.
+
+* Let $E\subscript{1}$ contain known edges, and $E\subscript{0}$ contain pairs of nodes with prior knowledge of no interaction.
+
+* The objective is to estimate $A$ subject to the external information in $E\subscript{0}$ and $E\subscript{1}$.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Network estimation under external information constrains
+
+Using the framework of __Gaussian graphical models__ the maximum likelihood estimate of $A$ is given by
+
+$$\min\subscript{A \succ 0} ( \mathrm{tr}(A\hat{\Sigma}) - \log \det A ),$$
+
+subject to
+
+$$\begin{eqnarray}
+\sum\subscript{i\neq j, (i, j) \notin E\subscript{0} \cup E\subscript{1} } |A\subscript{ij}| \leq t, \\\\\\
+A\subscript{ij} = 0, (i, j) \in E\subscript{0}, \\\\\\
+A\subscript{ij} \neq 0, (i, j) \in E\subscript{1},
+\end{eqnarray}$$
+
+where $\hat{\Sigma}$ denotes the empirical covariance matrix.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Network estimation under external information constrains
+
+Denote $Z$ the $m\times p$ data matrix.
+
+1. For every node $i$:
+   $$\hat{\theta}^i = \mathrm{argmin}\subscript{\theta} \frac{1}{m} \|\| Z\subscript{i} - Z\subscript{-i} \theta \|\|\subscript{2}^2 + 2\lambda \sum\subscript{j\neq i} t\subscript{j} |\theta\subscript{j}|,$$
+   where $t\subscript{j}$ is 0 if $j$ is known to be a neighbor of $i$, $\infty$ if $j$ and $i$ are known to be disconnected, and 1 otherwise.
+
+2. Get the network structure $\hat{E}$, where an edge $(i, j)$ is estimated if $\hat{\theta}\subscript{i}^j \neq 0$ or $\hat{\theta}\subscript{j}^i \neq 0$.
+
+3. $\hat{A} = \min\subscript{A \in S\subscript{\hat{E}}^p} ( \mathrm{tr}(A\hat{\Sigma}) - \log \det A )$,
+   where $S\subscript{E}^p$ denotes the set of all $p\times p$ positive definite matrices such that $A\subscript{ij} = 0$ for all $(i,j)\notin E$ with $i\neq j$.
             </script>
           </section>
 
         </section>
 
+
+        <section>
+
+          <section data-markdown>
+            <script type="text/template">
+            </script>
+          </section>
+
+        </section>
 			</div>
 		</div>
 
