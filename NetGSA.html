@@ -65,6 +65,15 @@
           </script>
         </section>
 
+        <section data-markdown>
+          <script type="text/template">
+## This presentation is based on:
+
+1. A. Shojaie and G. Michailidis, *Analysis of Gene Sets Based on the Underlying Regulatory Network*. J of Computational Biol. 2009. 
+2. A. Shojaie and G. Michailidis, *Network Enrichment Analysis in Complex Experiments*. Stat Appl Genet Mol Biol. 2010.
+3. J. Ma, A. Shojaie and G. Michailidis, *Network-Based Pathway Enrichment Analysis with Incomplete Network Information*. arXiv e-prints. 2014.
+          </script>
+        </section>
 
         <section>
 
@@ -322,6 +331,29 @@ Denote $Z$ the $m\times p$ data matrix.
 
 3. $\hat{A} = \min\subscript{A \in S\subscript{\hat{E}}^p} ( \mathrm{tr}(A\hat{\Sigma}) - \log \det A )$,
    where $S\subscript{E}^p$ denotes the set of all $p\times p$ positive definite matrices such that $A\subscript{ij} = 0$ for all $(i,j)\notin E$ with $i\neq j$.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Network estimation under external information constrains
+
+----------------------------------------------------------------------------------------
+
+### Theorem 2.3 in Ma et. al. (2014)
+
+Let $A\subscript{0}$ be the adjacency matrix of the true model.
+Under certain assumptions, with high probability it holds that
+
+$$\|\| \hat{A} - A\subscript{0} \|\|\subscript{2}^2 \leq \|\| \hat{A} - A\subscript{0} \|\|\subscript{F} = O\subscript{P} \left[ (S \log(p -  rp) / m)^{1/2} \right],$$
+
+where $S$ is the total number of true edges and $r$ is the percentage of external information.
+ 
+----------------------------------------------------------------------------------------
+
+### Theorem 2.1 in Shojaie et. al. (2010) and Corollary 3.1 in Ma et. al. (2014)
+
+Assume that $S = o(m / \log p)$ then the proposed test statistic (shown previously) based on the estimated network is an asymptotically most powerful unbiased test.
             </script>
           </section>
 
