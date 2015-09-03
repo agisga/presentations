@@ -409,9 +409,69 @@ Power were calculated based on the FDR controlling procedure of Benjamini & Hoch
 
           <section data-markdown>
             <script type="text/template">
+## Application to genomics and metabolomics
+
+### Application 1
+
+* The metabolomics data set (Putluri et al., 2011) examines changes in the metabolic profile between cancer and adjacent
+benign tissue specimens, with 31 samples from the cancer class and 28 from a benign class. 
+* The total number of metabolites detected is 63. 
+* The network of metabolic interactions is estimated subject to the information from the Kyoto Encyclopedia of Genes and Genomes (KEGG).
+* Tests of differential activity of biochemical pathways extracted from KEGG were performed using a false discovery rate correction with $q = 0.001$.
             </script>
           </section>
 
+          <section data-markdown>
+            <script type="text/template">
+## Application to genomics and metabolomics
+
+### Application 1
+
+![Metabolomic data p-values table PNG](images/NetGSA/metabolomics.png?raw=true)
+            </script>
+          </section>
+        </section>
+
+
+        <section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Application to genomics and metabolomics
+
+### Application 2
+
+* Gene expression profiles of 1416 genes for 62 normal and 24 lung cancer patients.
+* Interaction networks for both normal and lung cancer conditions were estimated based on the external topology information from the BioGRID Database.
+* Tests for enrichment of 61 pathways extracted from the KEGG data base were performed using a FDR correction with $q = 0.001$.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Application to genomics and metabolomics
+
+### Application 2
+
+![Gene expression data p-values table PNG](images/NetGSA/genomics.png?raw=true)
+            </script>
+          </section>
+        </section>
+
+
+        <section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Summary & Ideas
+
+* NetGSA can be more powerful than methods which are not network-based.
+* Computationally challenging for large networks.
+* Using the generalized linear mixed model framework for discrete data (e.g. SNP data).
+* Integrate other data types into the linear mixed model as additional fixed effects.
+* Incorporate correlations among subjects into a regression model by extracting a random effects structure from a network among subjects.
+            </script>
+          </section>
         </section>
 			</div>
 		</div>
