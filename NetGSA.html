@@ -364,6 +364,51 @@ Assume that $S = o(m / \log p)$ then the proposed test statistic (shown previous
 
           <section data-markdown>
             <script type="text/template">
+## Simulation Results
+
+- First experiment:
+  * $m=40$ and $p=64$.
+  * 8 subnetworks, each with 8 members.
+  * There is a 20% probability for subnetworks to connect to each other.
+  * Under the null, all subnetworks have the same topology and all nodes have mean expression 1.
+  * Under the alternative, the proportion of nodes that have mean changes of magnitude 1 is 0%, 40%, 40%, 50%, 0%, 40%, 40%, 50% for subnetworks 1&mdash;8, and subnetworks 5&mdash;8 differ in network structure to the null equivalent by 10%.
+- Second experiment has a similar design except:
+  * $m=100$ and $p=160$ with 20 members in each subnetwork.
+  * Mean changes of magnitude 0.3 for 0%, 40%, 60%, 80%, 0%, 40%, 60%, 80% of nodes.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation Results
+
+### Deviance measures for network estimation
+
+Let $r$ denote the percentage of prior information about the network structure.
+
+![Deviance measures table PNG](images/NetGSA/deviance_measures.png?raw=true)
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation Results
+
+### Estimated powers for each pathway
+
+NetGSA is compared to Gene Set Analysis (Efron & Tibshirani, 2007).
+Power were calculated based on the FDR controlling procedure of Benjamini & Hochberg (1995) with $q = 0.05$.
+
+![Estimates powers table PNG](images/NetGSA/power.png?raw=true)
+            </script>
+          </section>
+        </section>
+
+
+        <section>
+
+          <section data-markdown>
+            <script type="text/template">
             </script>
           </section>
 
