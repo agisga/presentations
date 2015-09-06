@@ -177,9 +177,7 @@ $$\Rightarrow X = \Lambda \gamma, \quad \gamma \sim N(\mu, \sigma\subscript{\gam
 
 * Let $\beta := ((\mu^C)^\prime, (\mu^T)^\prime)^\prime$, and rearrange $Y$, $\gamma$ and $\varepsilon$ into $np \times 1$ vectors, and redefine $\gamma$ such that $E(\gamma) = 0$. Then we obtain a linear mixed model:
 
-  <br>
   $$Y = \Psi \beta + \Pi \gamma + \varepsilon,$$
-  <br>
 
   where $\gamma \sim N(0, \sigma\subscript{\gamma}^2 I)$, $\Pi = I \otimes \Lambda \in \mathbb{R}^{np \times np}$, $\Psi = \chi \otimes \Lambda \in \mathbb{R}^{np \times 2p}$ ($\chi\in\mathbb{R}^{n\times 2}$ decodes membership in treatment or control group).
             </script>
@@ -259,9 +257,8 @@ $$\Rightarrow X = \Lambda \gamma, \quad \gamma \sim N(\mu, \sigma\subscript{\gam
 
 * The authors propose a $t$-test and an $F$-test whose degrees of freedom are approximated with the Satterthwaite method, using the test statistics
 
-  $$T = \frac{l^\prime \hat{\beta}}{\sqrt{l\hat{C}l^\prime}},$$
-  and
-  $$F = \frac{\hat{\beta}^\prime L^\prime (L\hat{C}L^\prime)^{-1} L\hat{\beta}}{\mathrm{rank}(L)},$$
+  $$T = \frac{l^\prime \hat{\beta}}{\sqrt{l\hat{C}l^\prime}} \quad\mathrm{and}\quad F = \frac{\hat{\beta}^\prime L^\prime (L\hat{C}L^\prime)^{-1} L\hat{\beta}}{\mathrm{rank}(L)},$$
+
   where $C = (\Psi^\prime W^{-1} \Psi)^{-1}$.
             </script>
           </section>
@@ -351,7 +348,7 @@ where $S$ is the total number of true edges and $r$ is the percentage of externa
  
 ----------------------------------------------------------------------------------------
 
-### Theorem 2.1 in Shojaie et. al. (2010) and Corollary 3.1 in Ma et. al. (2014)
+### Corollary 3.1 in Ma et. al. (2014)
 
 Assume that $S = o(m / \log p)$ then the proposed test statistic (shown previously) based on the estimated network is an asymptotically most powerful unbiased test.
             </script>
@@ -369,7 +366,7 @@ Assume that $S = o(m / \log p)$ then the proposed test statistic (shown previous
 - First experiment:
   * $m=40$ and $p=64$.
   * 8 subnetworks, each with 8 members.
-  * There is a 20% probability for subnetworks to connect to each other.
+  <!-- * There is a 20% probability for subnetworks to connect to each other.-->
   * Under the null, all subnetworks have the same topology and all nodes have mean expression 1.
   * Under the alternative, the proportion of nodes that have mean changes of magnitude 1 is 0%, 40%, 40%, 50%, 0%, 40%, 40%, 50% for subnetworks 1&mdash;8, and subnetworks 5&mdash;8 differ in network structure to the null equivalent by 10%.
 - Second experiment has a similar design except:
@@ -427,8 +424,6 @@ benign tissue specimens, with 31 samples from the cancer class and 28 from a ben
             <script type="text/template">
 ## Application to genomics and metabolomics
 
-### Application 1
-
 ![Metabolomic data p-values table PNG](images/NetGSA/metabolomics.png?raw=true)
 <cite> Source: J. Ma, A. Shojaie and G. Michailidis, *Network-Based Pathway Enrichment Analysis with Incomplete Network Information*. arXiv e-prints. 2014.
             </script>
@@ -453,8 +448,6 @@ benign tissue specimens, with 31 samples from the cancer class and 28 from a ben
           <section data-markdown>
             <script type="text/template">
 ## Application to genomics and metabolomics
-
-### Application 2
 
 ![Gene expression data p-values table PNG](images/NetGSA/genomics.png?raw=true)
 <cite> Source: J. Ma, A. Shojaie and G. Michailidis, *Network-Based Pathway Enrichment Analysis with Incomplete Network Information*. arXiv e-prints. 2014.
