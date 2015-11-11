@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+    <title>ASHG 2015 Impressions - Alexej Gossmann</title>
+
+		<meta name="description" content="Tulane University Department of Mathematics.">
+		<meta name="author" content="Alexej Gossmann">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+    <!-- <link rel="stylesheet" href="css/theme/simple-custom.css"> -->
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <!-- MathJax interation, more configuration under Reveal.initialize below -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [["$","$"]]}});
+      MathJax.Hub.Config({TeX: {Macros:{subscript:['_{#1}',1],superscript:['^{#1}',1]}}});
+    </script> 
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+        <section data-markdown>
+          <script type="text/template">
+# ASHG 2015 Impressions
+
+### Alexej Gossmann
+#### Tulane University
+#### Center for Bioinformatics and Genomics Research Meeting 
+### 2015/11/11
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Some of the sessions that I have attended at the American Society of Human Genetics 2015 Annual Meeting
+
+* Life Beyond Additive Variance
+* Building the Genetic and Genomic Atlas of Gynecologic Health 
+* Methods Matter: Approaches for Genomic Analysis
+* Adult-onset Neuropsychiatric Disease
+* Schizophrenia and Brain Development
+* Distinguished Speakers Symposium: The Art and Science of Science Communication
+* Statistical Genetics: Complex Phenotypes, Complex Solutions
+* Statistical Genetics: Networks, Pathways, and Expression
+* Statistical Genetics: Analyze Family-wise
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Note
+
+1. It has been a month since I came back from that conference, and therefore my recollection of the talks might not be very precise.
+2. The topics presented in the following were chosen according to my personal preference at this time, and are not necessarily those sticking out the most at this years ASHG.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### A powerful new method based on mutual information to simultaneously test for additive, dominance, and interaction effects.
+#### A. I. Young, F. Wauthier, P. Donnelly.
+
+* __Goal:__ Identification of dominance and interaction effects (i.e., non-additive effects).
+* Modeling the phenotype-genotype relationships as conditional Normal distributions leads to a __hierarchy of models__:
+  1. Linear mean changes correspond to an additive model.
+  2. Non-linear changes in mean suggest dominance effects.
+  3. (Log-) Linear variance changes correspond to interaction effects.
+  4. More general variance changes can be considered as well.
+* Apply statistical tests jointly to mean and variance changes. 
+  - The authors propose a mutual information based test statistic which is proportional to the sum of the log likelihood ratio test statistics for additive, dominance and interaction effects.
+  - Consideration of variance changes often makes the p-values smaller.
+  - The authors identify novel loci for BMI, and interactions of multiple loci with lifestyle.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## ASHG sessions on science communication
+
+* No one has to listed to you.
+* Test simple messages and repeat them often.
+* Use twitter.
+* ePatients and the power of a connected community (see talk by A. Downing).
+    - *ePatients*: A movement of lay people (community of patients) who know the important research topics.
+    - Data sharing problem, and communication problem in science &mdash; Patient needs to make hard choices from incomplete information.
+    - Example of a successful patient community / data sharing project: [3q29deletion.com](https://3q29deletion.patientcrossroads.org/) (3q29 Deletion is rare, but it has the largest association with schizophrenia discovered so far; see talk by J. G. Mulle, M. Glassford, J. A. Rosenfeld, A. Freedman, E. McGarry, M. E. Zwick)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Quantifying penetrance in a dominant disease gene using large population control cohorts. 
+#### E. V. Minikel, S. M. Vallabh, M. Lek, K. O.  Estrada, K. E. Samocha, J. F. Sathirapongsasuti, C. Y. McLean, J. Y. Tung, L.  P. C. Yu, M. J. Daly, D. G. MacArthur, Exome Aggregation Consortium.
+
+* A Mendelian genetic deviance was found. Does this mean that I will definitely get the disease?
+* Average person has over 50 variants associated with Mendelian diseases..
+* How much are false positives? How much are incomplete penetrance?
+
+* *Example*: Prion diseases.
+
+    - 63 "causal" mutations reported in the literature.
+    - The authors analyse a sample of 60k exomes and additional 500k [23andme](https://www.23andme.com/) individuals.
+    - *Conclusion*: Different variants confer lifetime risk ranging from <0.1% to 100%.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Sex-specific gene co-expression networks.
+#### B. E. Engelhardt, C. Gao, C. D. Brown.
+
+* Gene co-expression networks provide useful latent structure.
+* Differential gene co-expression network are informative; e.g. condition-specific such as male and female.
+* Condition-specific network reconstruction via Bayesian biclustering:
+  - Latent factor model $Y = \Lambda X + \varepsilon$, where $Y$ is the set of observations for $p$ genes and $n$ samples.
+  - To induce sparsity use the three parameter beta prior on $\Lambda$ and $X$.
+  - Recover the network as $\mathrm{Threshold}\left(\mathrm{Cov}(Y)^{-1}\right)$.
+* [ArXiV paper published](http://arxiv.org/pdf/1411.1997.pdf).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### PolyTest: A novel method for joint analysis of genome-wide association studies and functional annotations 
+#### D. Golan, A. Raj, K. Gaulton, S. Jain, D. Calderon, Y. Field, T. Raj, J. Pritchard
+
+* Joint analysis of GWAS test statistics and functional annotations.
+* Using a normal model with random normal mean.
+* Results: significant associations found for example between type-2 diabetes and adipose tissue, Schizophrenia and mid-frontal lobe, and Alzheimer’s disease and Treg cells.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Heritability estimates for thirty-four traits in a large Ugandan cohort. 
+#### D. Heckerman, D. Gurdasani, C. Pomilla, R. Nsubuga, C. Kadie, C. Widmer, M. Sandhu.
+
+* The heritability estimate $h$ is inflated when environmental effects are not taken into account.
+* Solution: use a linear mixed model with a random genetic effect and a random environmental effect to estimate heritability.
+  - Genetic random effects are based on identity-by-descent estimates.
+  - *New idea (?)*: Spatial location is used as a surrogate for environmental effects (the correlation structure is adjusted for location based on Gaussian radial basis functions).
+* [FaST-LMM](https://github.com/MicrosoftGenomics/FaST-LMM) is used for efficient computation.
+* Additionally, the amount of variance explained by location can be estimated, which was significantly greater than zero for 22 of the 34 traits.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bonus
+
+Recently (not at ASHG) I have attended a talk on *interactive graphics for genetic data* ([slides are available online.](https://www.biostat.wisc.edu/~kbroman/presentations/BMI2015/)) by [Karl Broman](http://kbroman.org/). I think that... 
+
+1. ...interactive graphics have the potential to become extremely important for exploratory analysis of big data. 
+2. ...currently there is a great lack of available software tools. 
+3. ...there is a chance to publish software that will be widely used and will have a large impact on the field of genetics.
+          </script>
+        </section>
+
+			</div>
+      <!-- End of slide show -->
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'default', // default / none / slide / concave / convex / zoom
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+        // MathJax integration
+        math: {
+          mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+          config: 'TeX-AMS_HTML-full' // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/math/math.js', async: true }
+				]
+
+			});
+
+		</script>
+
+	</body>
+</html>
