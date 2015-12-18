@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+    <title>Identification of significant genetic variants via SLOPE, and its extension to Group SLOPE</title>
+
+		<meta name="description" content="Tulane University Department of Mathematics.">
+		<meta name="author" content="Alexej Gossmann">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+    <!-- <link rel="stylesheet" href="css/theme/simple-custom.css"> -->
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <!-- MathJax interation, more configuration under Reveal.initialize below -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [["$","$"]]}});
+      MathJax.Hub.Config({TeX: {Macros:{subscript:['_{#1}',1],superscript:['^{#1}',1]}}});
+    </script> 
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+        <section data-markdown>
+          <script type="text/template">
+## Identification of significant genetic variants via *SLOPE*, and its extension to *Group SLOPE*
+
+### Alexej Gossmann<sup>1, 2</sup>
+#### Department of Mathematics, University of Wroclaw
+### 2015/12/18
+
+<br>
+
+-------------------------------------
+<P ALIGN="left"> 
+
+<small>1. Department of Mathematics, Tulane University, New Orleans </small> <br>
+<small>2. Multiscale Bioimaging and Bioinformatics Laboratory, Tulane University, New Orleans </small> <br>
+
+</P>
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Introduction
+
+### The model selection problem
+
+* Linear model $\mathbf{y}=X\mathbf{b} + \mathbf{z}$, where $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{z}\sim \mathrm{N}(0,\sigma^2 I)$.
+* Possibly $n < p$.
+* _Estimation_: Find best predictions for $\mathbf{y}$.
+* _Feature selection_: Find which $b_i$ are non-zero.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Introduction
+
+### The model selection problem in genetics
+
+* Genomic, proteomic, epigenomic, metabolomic, etc. data are typically high-dimensional and suffer from the curse of dimensionality.
+* Elimination of noisy or redundant features leads to more accurate prediction. 
+* Prediction of a disease phenotype based on a handful of features is needed for inexpensive diagnosis.
+* Feature selection can lead to better understanding of the underlying biology.
+          </script>
+        </section>
+        <section data-markdown>
+          <script type="text/template">
+### $\ell_0$ regularization (e.g. $C_p$ by Mallows, 1973, and AIC by Akaike, 1974)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \lVert\mathbf{y} - X\mathbf{b}\rVert^2\subscript{2} + \lambda \lVert\mathbf{b}\rVert\subscript{0}$$
+
+* $\ell_0$ norm is non-convex $\leadsto$ Not practical for large $p$ (e.g. for $p=100$)
+
+### $\ell_1$ regularization (e.g. LASSO by Tibshirani, 1994)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \lVert\mathbf{y} - X\mathbf{b}\rVert\subscript{2}^2 + \lambda\lVert\mathbf{b}\rVert\subscript{1}$$
+
+* Small $\lambda$ leads to the selection of too many irrelevant parameters (ineffective in sparse settings).
+* Large $\lambda$ yields little power as well as a large bias.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## SLOPE
+
+### Sorted L-One Penalized Estimation (Bogdan, van den Berg, Su, Candes, 2013)
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \lVert \mathbf{y} - X\mathbf{b}\rVert\subscript{2}^2 + \sum\subscript{i=1}^p \lambda\subscript{i} |\mathbf{b}|\subscript{(i)}$$
+
+* _Regularizing sequence_ $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \ldots \geq \lambda\subscript{p} \geq 0$
+
+* $|b|\subscript{(1)} \geq |b|\subscript{(2)} \geq \ldots \geq |b|\subscript{(p)}$ denotes the order statistic of the magnitudes of the vector $\mathbf{b}\in\mathbb{R}^p$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+* M. Bogdan, E. van den Berg, W. Su, and E. Candes.  _Statistical estimation and testing via the sorted L1 norm_. ArXiv e-prints, Oct. 2013.
+* M. Bogdan, E. van den Berg, C. Sabatti, W. Su, and E. J. Candes. _SLOPE – Adaptive Variable Selection via Convex Optimization_. ArXiv e-prints, July 2014.
+* E. Candes and W. Su. _SLOPE is Adaptive to Unknown Sparsity and Asymptotically Minimax_. ArXiv e-prints, Mar. 2015.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## SLOPE
+
+* SLOPE is convex.
+* Computational cost is roughly the same as for the LASSO.
+* Adaptivity to the sparsity level: the cost of including new variables decreases as more variables are added to the model.
+* Related to the BHq procedure (Y. Benjamini and Y. Hochberg, 1995) with similar FDR control properties.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## False discovery rate (FDR)
+
+Essentially, the SLOPE procedure is testing the $p$ hypotheses $H\subscript{i} : b\subscript{i} = 0$ for $i = 1,\ldots,p$, where $H\subscript{i}$ is rejected iff $\hat{b}\subscript{i}\neq 0$. 
+
+SLOPE aims to control the FDR, i.e. the proportion of the irrelevant among all selected predictors.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+Let $R =$ #rejections, $V =$ #false rejections, $p\subscript{0} =$ #true null hypotheses.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+### Theorem (Bogdan, van den Berg, Su, Candes, 2013)
+
+Assume an orthogonal design with i.i.d. $\mathrm{N}(0,1)$ errors, and set $\lambda\subscript{i} = \Phi^{-1}\left( 1 - q\frac{i}{2p} \right)$. Then the FDR of SLOPE obeys
+
+$$\mathrm{FDR} = \mathrm{E}\left( \frac{V}{\max(R,1)} \right) \leq q\frac{p\subscript{0}}{p}.$$
+
+---------------------------------------------------------------------------------------------------------------------------------------
+          </script>
+        </section>
+        
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+![orthogonal design SLOPE FDR plot](images/GroupSLOPE/FDRandPower_OrthogonalDesign.png?raw=true)
+
+$500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 replications at each sparsity level, bars for $\pm$ SD
+          </script>
+        </section>
+
+        <!--
+        <section data-markdown>
+          <script type="text/template">
+## Orthogonal designs
+
+![orthogonal design SLOPE FDR plot with strong signal](images/GroupSLOPE/FDRandPower_OrthogonalDesign_strong_signal.png?raw=true)
+
+$5 \sqrt{2\log(n)}$ signal strength (5 times previous)
+          </script>
+        </section>
+        -->
+
+        <section data-markdown>
+          <script type="text/template">
+## Nonorthogonal designs
+
+* Theorem is not valid for nonorthogonal design matrices.
+
+* The regularizing sequence can be adjusted:
+
+$$\begin{eqnarray}
+  \lambda\subscript{1} &=& \lambda\subscript{1}^{\mathrm{(BH)}},\\\\\\
+  \lambda\subscript{i} &=& \lambda\subscript{i}^{\mathrm{(BH)}} \sqrt{ 1 + \omega(i-1) },
+\end{eqnarray}$$
+
+where $\lambda\subscript{i}^{\mathrm{(BH)}} = \Phi^{-1}\left(1 - q\frac{i}{2p} \right)$ and $\omega(i) \approx \mathrm{E}\left[ \left( X\subscript{i}^T X\subscript{S} (X\subscript{S}^T X\subscript{S})^{-1} \lambda\subscript{S} \right)^2 \right]$ with $S = \mathrm{supp}(\mathbf{b})$.
+
+* $\omega(i)$ can be approximated with a Monte Carlo simulation.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Unknown noise level and intercept
+
+* SLOPE does not include an intercept term and presupposes the knowledge of the noise level $\sigma^2$.
+
+* Estimation of the intercept can be avoided by standardizing the response as well as the predictor variables.
+
+* $\sigma^2$ can be estimated by the following iterative procedure:
+
+  1. Set $\hat{\sigma}^{(0)}$ equal to the sample standard deviation of $\mathbf{y}$.
+  2. Update $\hat{\sigma}^{(k)}$ using linear regression on $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$, which is identified by SLOPE with $\hat{\sigma}^{(k-1)}$.
+  3. Repeat step 2 until $\mathrm{supp}\left(\hat{\mathbf{b}}^{(k)}\right) = \mathrm{supp}\left(\hat{\mathbf{b}}^{(k-1)}\right)$.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Simulation of realistic DNA sequence data
+
+* [SeqSIMLA2](http://seqsimla.sourceforge.net/) (Chung et al. 2015) and [cosi](http://www.broadinstitute.org/~sfs/cosi/) (Schaffner et al. 2005) were used to simulate DNA sequence data that closely resemble empirical data.
+* Each of 100 simulated data sets consists of 5330 SNPs (single nucleotide polymorphism) for 2000 unrelated individuals. 
+* The phenotype is a quantitative trait simulated under the additive model in SeqSIMLA2. 
+* Significant SNPs were randomly selected among SNPs with MAF (minor allele frequency) of at least 0.01
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Simulation of realistic DNA sequence data
+
+We consider two scenarios:
+
+1. 5 significant SNPs, each explaining 10% of the phenotypic variance; the remaining 50% of the variance due to environmental effects; no polygenic effects.
+
+2. 20 significant SNPs, each explaining 5% of the variance; no environmental or polygenic effects.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Data pruning
+
+* Even with $\lambda\subscript{1}, \lambda\subscript{2}, \dots, \lambda\subscript{p}$ adjusted as described previously, SLOPE cannot handle high correlations between predictors well.
+* Data is pruned such that the maximal pair-wise correlation between predictors does not exceed 0.3, by iteratively removing columns from the design matrix based on their average pair-wise correlation and their univariate association with the response. 
+
+<br>
+$\leadsto$ Of the 5330 SNPs approximately 320 remain in the data, and approximately half of the significant SNPs are discarded... 
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics
+
+### Results
+
+* We compare the performance of SLOPE to the LASSO.
+* The LASSO regularization parameter $\lambda$ is selected by ten-fold cross-validation.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics Results
+
+![first data type - SLOPE results plot](images/GroupSLOPE/unrelated_individuals_results_5signif.png)
+
+5 significant SNPs, each explaining 10% of the phenotypic variance
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Application to genetics Results
+
+![second data type - SLOPE results plot](images/GroupSLOPE/unrelated_individuals_results_20signif.png)
+
+20 significant SNPs, each explaining 5% of the phenotypic variance
+          </script>
+        </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Group SLOPE Motivation
+
+* SLOPE works best if the predictor variables have very small pair-wise correlations.
+* Typically, genetic data is highly correlated.
+
+<br>
+$\Rightarrow$ Genetic data needs to be pruned to a great extent, in order to get good results with SLOPE.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Group SLOPE Motivation
+
+* Often the data can be subdivided into groups with possibly a high within group correlation but a low between group correlation.
+* Specifically in genomic data analysis, SNPs in a gene or genes in a pathway can be available as prior knowledge along with a sparsity assumption.
+
+<br>
+$\Rightarrow$ Select or drop entire groups rather than individual significant predictors.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+### Group LASSO (M. Yuan and Y. Lin, 2006, and others)
+
+* $\mathbf{y} = X\mathbf{b} + \mathbf{e}$, $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{e}\sim\mathrm{N}(0, \sigma_e^2 I)$. 
+
+* The predictor variables $\mathbf{b}$ are divided into $J$ groups of sizes $p_1, p_2, \cdots, p_J$, i.e. $\mathbf{b} = (\mathbf{b}_1^T, \mathbf{b}_2^T, \ldots, \mathbf{b}_J^T)^T$ with $\mathbf{b}_i \in \mathbb{R}^{p_i}$. 
+
+* Estimate $\mathbf{b}$ as the solution to the convex minimization problem
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \left\lVert\mathbf{y} - X\mathbf{b}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda \sqrt{p\subscript{i}}\left\lVert\mathbf{b}\subscript{i}\right\rVert\subscript{2}.$$
+
+* For any $i$ this procedure either keeps the entire block $\mathbf{b}\subscript{i}$ non-zero, or sets all its components to zero.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Group SLOPE Model
+
+* Group SLOPE is related to Group LASSO in the same way in which SLOPE is related to LASSO.
+
+* Define the Group SLOPE minimization problem as
+
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \left\lVert\mathbf{y} - X\mathbf{b}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda\subscript{i} \sqrt{p\subscript{(i)}}\left\lVert\mathbf{b}\subscript{(i)}\right\rVert\subscript{2},$$
+
+where $\sqrt{p\subscript{(1)}}\left\lVert \mathbf{b}\subscript{(1)} \right\rVert\subscript{2} \geq \sqrt{p\subscript{(2)}}\left\lVert \mathbf{b}\subscript{(2)} \right\rVert\subscript{2} \geq \ldots \geq \sqrt{p\subscript{(J)}}\left\lVert \mathbf{b}\subscript{(J)} \right\rVert\subscript{2}$.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Computational algorithms
+
+* A group-wise generalization of the algorithm in the original SLOPE paper (Bogdan, van den Berg,  Su, Candes, 2013).
+
+* The minimization problem can be rewritten as a sum of a convex function and a differentiable convex function with a Lipschitz continuous derivative:
+
+$$\min\subscript{\mathbf{c}\in\mathbb{R}^p} f\subscript{1}(\mathbf{c}) + f\subscript{2}(\mathbf{c}),$$
+
+$$\begin{eqnarray} 
+f\subscript{1}(\mathbf{c}) &=& \frac{1}{2} \left\lVert\mathbf{y} - X D^{-1} \mathbf{c}\right\rVert\subscript{2}^2, \nonumber \\\\\\
+f\subscript{2}(\mathbf{c}) &=& \sum\subscript{i=1}^J \lambda\subscript{i} \left\lVert\mathbf{c}\subscript{(i)}\right\rVert\subscript{2}, \nonumber\\\\\\
+\mathbf{c}\subscript{i} &=& \sqrt{p\subscript{i}}\mathbf{b}\subscript{i}. \nonumber
+\end{eqnarray}$$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+              <section style="text-align: left;">
+
+### Proximal gradient method for Group SLOPE 
+
+$\varepsilon\in\left(0, \min\left(1,\frac{1}{\xi}\right) \right)$, $\mathbf{b}^{(0)}\in\mathbb{R}^p$, $\mathbf{c}^{(0)} = D\mathbf{b}^{(0)}$
+
+`for` $k = 0, 1, 2, \dots$ `do`
+
+$$\begin{eqnarray} 
+\quad \gamma\subscript{k} &\in& \left[\varepsilon,\frac{2}{\xi}-\varepsilon\right] \nonumber \\\\\\
+\quad \mathbf{c}^{(k+1)} &\gets& \mathrm{prox}\subscript{\gamma\subscript{k} f\subscript{2}}\left( \mathbf{c}^{(k)} - \gamma\subscript{k} \left(XD^{-1}\right)^T\left(X\mathbf{b}^{(k)} - \mathbf{y}\right) \right) \nonumber \\\\\\
+\quad \mathbf{b}^{(k+1)} &=& D^{-1} \mathbf{c}^{(k+1)} \nonumber
+\end{eqnarray}$$
+
+`end for`
+            </script>
+          </section>
+
+
+          <section data-markdown>
+            <script type="text/template">
+### Computing the prox
+
+Proximal mapping:
+
+$$\mathrm{prox}\subscript{f\subscript{2}}(y) = \mathrm{argmin}\subscript{\mathbf{x}\in\mathbb{R}^p} \frac{1}{2}\left\lVert\mathbf{y} - \mathbf{x}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda\subscript{i} \left\lVert\mathbf{x}\subscript{(i)}\right\rVert\subscript{2}.$$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+### Computing the prox
+
+### Lemma
+
+If $\tilde{\mathbf{x}} = (\tilde{x}\subscript{1},\dots,\tilde{x}\subscript{J})^T \in \mathbb{R}^J$ is the solution of the minimization problem
+
+$$\min\subscript{\tilde{\mathbf{x}}\in\mathbb{R}^J} \frac{1}{2}\sum\subscript{i=1}^{J} \left(\left\lVert\mathbf{y}\subscript{i}\right\rVert\subscript{2} - \tilde{x}\subscript{i} \right)^2 + \sum\subscript{i=1}^J \lambda\subscript{i} \left| \tilde{x} \right|\subscript{(i)}.$$
+
+Then the solution to $\mathrm{prox}_{f_2}(y)$ is given by
+
+$$\begin{eqnarray} 
+\mathbf{x} &=& (\mathbf{x}\subscript{1}^T, \mathbf{x}\subscript{2}^T, \dots, \mathbf{x}\subscript{J}^T)^T \mathrm{with} \nonumber \\\\\\
+\mathbf{x}\subscript{i} &=& \frac{\tilde{x}\subscript{i}}{\left\lVert\mathbf{y}\subscript{i}\right\rVert\subscript{2}} \mathbf{y}\subscript{i}, \quad \forall i\in\{1,\dots,J\},
+\end{eqnarray}$$
+
+where $\mathbf{y}\subscript{i}\in\mathbb{R}^{p_i}$ denotes the $i$th block of $\mathbf{y}\in\mathbb{R}^p$ for $i\in\{1,\dots,J\}$.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+### Computing the prox
+
+The Lemma combined with the fast prox algorithm for the SLOPE method (Algorithm 4 in Bogdan, van den Berg, Sabatti, Su, Candes, 2014) implies a simple algorithm for the prox function.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+              <section style="text-align: left;">
+### Algorithm computing the prox
+
+$\mathbf{x} = (\mathbf{x}\subscript{1}^T,\dots, \mathbf{x}\subscript{J}^T)^T$
+
+$\mathbf{y} = (\mathbf{y}\subscript{1}^T,\dots, \mathbf{y}\subscript{J}^T)^T$
+
+$\tilde{\mathbf{y}} = (\tilde{y}\subscript{1},\dots,\tilde{y}\subscript{J})^T = (\left\lVert\mathbf{y}\subscript{1}\right\rVert\subscript{2}, \left\lVert\mathbf{y}\subscript{2}\right\rVert\subscript{2}, \dots, \left\lVert\mathbf{y}\subscript{J}\right\rVert\subscript{2})^T$ 
+
+$\tilde{\mathbf{x}} = (\tilde{x}\subscript{1},\dots,\tilde{x}\subscript{J})^T = \mathrm{prox}\subscript{J\subscript{\lambda}}\left( \tilde{\mathbf{y}} \right)$
+
+`for` $k = 1, 2, \dots, J$ `do`
+
+$\quad\mathbf{x}\subscript{i} = \frac{\tilde{x}\subscript{i}}{\tilde{y}\subscript{i}} \mathbf{y}\subscript{i}$
+
+`end for`
+
+where $\mathrm{prox}\subscript{J\subscript{\lambda}}$ is the prox function of SLOPE.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Regularizing sequence
+
+* In order to (approximately) control the false discovery rate, we need to select suitable $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \dots \geq \lambda\subscript{J}$.
+
+* Can procedures available for the SLOPE method be generalized for Group SLOPE?
+
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Regularizing sequence
+
+### A simplified special case
+
+* Assume that the columns of $X$ are all equal within each block but different between different blocks. 
+
+
+* Collapse $X\in\mathbb{R}^{n\times p}$ into $\tilde{X}\in\mathbb{R}^{n\times J}$, and let $\tilde{\mathbf{b}}\in\mathbb{R}^J$ have entries $\tilde{b}\subscript{i} = p\subscript{i} {\mathbf{b}\subscript{i}}\subscript{1}$. Then the objective function becomes:
+  
+$$\frac{1}{2}\left\lVert\mathbf{y} - \tilde{X}\tilde{\mathbf{b}}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda\subscript{i} \left| \tilde{b}\subscript{(i)} \right|.$$
+
+* This has the form of the regular SLOPE problem, and $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \dots \geq \lambda\subscript{J}$ can be constructed by the available procedure.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Regularizing sequence
+
+For a general model matrix $X$ the above motivates the following approach:
+
+1. Construct a matrix $\tilde{X}$ by taking its $i$th column to be the average of the columns of the $i$th block of $X$. 
+
+2. Normalize the columns of $\tilde{X}$ to have norms equal to one. 
+
+3. Construct a regularizing sequence $\lambda\subscript{1} \geq \lambda\subscript{2} \geq \dots \geq \lambda\subscript{J}$ using the Monte Carlo based method for SLOPE.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+### Simulated data
+
+* $n = 200$, $p =  1050$, $\mathbf{y} = X\mathbf{b} + \mathbf{e}$ with $\mathbf{e} \sim \mathrm{N}(0,I)$. 
+
+* The $p$ predictors are divided into 90 groups; 30 groups of size 5, 30 groups of size 10, and 30 groups  of size 20.
+
+* The non-zero variables are set to be $\pm 1$ (same sign within a block).
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+### Simulated data
+
+* We consider ten sparsity levels (proportion of significant groups among their total number). 
+
+* At each sparsity level we consider:
+
+  - A case with very high within group correlations ($\approx 0.99$) and very low between group correlations ($\approx 0.05$).
+  - A setting with only moderately large within group correlations ($\approx 0.7$) and moderate between group correlations ($\approx 0.3$).
+
+* At each sparsity level 1000 repetitions are performed for each setting.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![Group SLOPE FDR plot](images/GroupSLOPE/GroupSLOPE_FDRandPower_highWithinGrpCor.png)
+
+* within group correlations $\approx 0.99$
+* between group correlations $\approx 0.05$
+* bars correspond to $\pm$ SD
+            </script>
+          </section>
+          
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![CV Group LASSO FDR plot](images/GroupSLOPE/CVGroupLASSO_FDRandPower_highWithinGrpCor.png)
+
+* within group correlations $\approx 0.99$ 
+* between group correlations $\approx 0.05$
+* bars correspond to $\pm$ SD
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![Group SLOPE FDR plot](images/GroupSLOPE/GroupSLOPE_FDRandPower_moderateWithinGrpCor.png)
+
+* within group correlations $\approx 0.7$
+* between group correlations $\approx 0.3$
+* bars correspond to $\pm$ SD
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![CV Group LASSO FDR plot](images/GroupSLOPE/CVGroupLASSO_FDRandPower_moderateWithinGrpCor.png)
+
+* within group correlations $\approx 0.7$
+* between group correlations $\approx 0.3$
+* bars correspond to $\pm$ SD
+            </script>
+          </section>
+          
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![Number of selected vs significant plot](images/GroupSLOPE/NumSelected_highWithinGrpCor.png)
+
+* within group correlations $\approx 0.99$ 
+* between group correlations $\approx 0.05$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Simulation results
+
+![Number of selected vs significant plot](images/GroupSLOPE/NumSelected_moderateWithinGrpCor.png)
+
+* within group correlations $\approx 0.7$ 
+* between group correlations $\approx 0.3$
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+* SLOPE outperformed LASSO in terms of FDR as well as prediction MSE while having the same detection power.
+* However, FDR of the SLOPE largely exceeded the nominal level of 0.1. Possibly data simulated by SeqSIMLA does not match SLOPE in some way.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+* For very sparse data (sparsity level $<0.1$), even under orthogonal designs the false discovery proportion is quite unstable, and often exceeds the aimed level significantly in our simulations.
+* Same appears to be true for Group SLOPE.
+* In many genomic instances the solution resides at these very sparse levels. This might require special care in future applications.
+
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Conclusion
+
+Similar to SLOPE, in considered settings...
+
+* Group SLOPE adapts the number of selected groups to the unknown true number of significant groups of predictors. 
+* Group SLOPE keeps the false discovery rate below a specified level.
+* Group LASSO has a much higher FDR and a lower detection power than Group SLOPE.
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type="text/template">
+## Future work 
+
+* Application to real data
+* Effect of covariates of different directionality in the same block in the Group SLOPE model
+* Different ways of dividing the data into blocks
+* Incorporation of other types of prior knowledge, e.g. family relationships among the subjects as random effects in the model
+* Ways to construct the regularizing sequence $\lambda\subscript{1}, \lambda\subscript{2}, \dots, \lambda\subscript{p}$, which are less computationally expensive than the Monte Carlo approach
+            </script>
+          </section>
+
+
+          <section data-markdown>
+            <script type="text/template">
+## Acknowledgments
+
+* This work is partially supported by NIH R01 GM109068 and R01 MH104680.
+
+* I would also like to thank Malgorzata Bogdan\* and Weijie Su\*\* (two of the original authors of SLOPE) for helpful comments.
+
+<br>
+
+-------------------------------------
+<P ALIGN="left"> 
+<small>
+\* Wroclaw University of Technology, Department of Mathematics and Computer Science <br>
+\*\* Stanford University, Department of Statistics
+</small>
+</P>
+            </script>
+          </section>
+
+
+          <section data-markdown>
+            <script type="text/template">
+# Thank you!
+
+#### This presentation is accessible at [www.alexejgossmann.com](http://www.alexejgossmann.com/).
+            </script>
+          </section>
+			</div>
+		</div>
+
+			</div>
+      <!-- End of slide show -->
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'default', // default / none / slide / concave / convex / zoom
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+        // MathJax integration
+        math: {
+          mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+          config: 'TeX-AMS_HTML-full' // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/math/math.js', async: true }
+				]
+
+			});
+
+		</script>
+
+	</body>
+</html>
