@@ -15,8 +15,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
-		<link rel="stylesheet" href="css/theme/simple-custom.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+    <!-- <link rel="stylesheet" href="css/theme/simple-custom.css"> -->
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -36,14 +36,11 @@
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
 
-    <!-- MathJax interation-->
+    <!-- MathJax interation, more configuration under Reveal.initialize below -->
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({tex2jax: {inlineMath: [["$","$"]]}});
       MathJax.Hub.Config({TeX: {Macros:{subscript:['_{#1}',1],superscript:['^{#1}',1]}}});
     </script> 
-    <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full">
-    </script>
 	</head>
 
 	<body>
@@ -52,6 +49,7 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
+
         <section data-markdown>
           <script type="text/template">
 ## Identification of significant genetic variants via *SLOPE*, and its extension to *Group SLOPE*
@@ -81,7 +79,7 @@
 
 * Linear model $\mathbf{y}=X\mathbf{b} + \mathbf{z}$, where $\mathbf{y}\in\mathbb{R}^n$, $X\in\mathbb{R}^{n\times p}$, $\mathbf{b}\in\mathbb{R}^p$, $\mathbf{z}\sim \mathrm{N}(0,\sigma^2 I)$.
 * Possibly $n < p$.
-* _Estimation_: Find best predictions for $\mathbf{y}$ or $\mathbf{b}$.
+* _Estimation_: Find best predictions for $\mathbf{y}$.
 * _Feature selection_: Find which $b_i$ are non-zero.
           </script>
         </section>
@@ -185,6 +183,7 @@ $500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 repli
           </script>
         </section>
 
+        <!--
         <section data-markdown>
           <script type="text/template">
 ## Orthogonal designs
@@ -194,6 +193,7 @@ $500\times 500$ orthogonal design, $\sqrt{2\log(n)}$ signal strength, 1000 repli
 $5 \sqrt{2\log(n)}$ signal strength (5 times previous)
           </script>
         </section>
+        -->
 
         <section data-markdown>
           <script type="text/template">
@@ -336,7 +336,7 @@ $\Rightarrow$ Select or drop entire groups rather than individual significant pr
 
 * Estimate $\mathbf{b}$ as the solution to the convex minimization problem
 
-$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \left\lVert\mathbf{y} - X\mathbf{b}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda\subscript{i} \sqrt{p\subscript{i}}\left\lVert\mathbf{b}\subscript{i}\right\rVert\subscript{2}.$$
+$$\min\subscript{\mathbf{b}\in\mathbb{R}^p} \frac{1}{2} \left\lVert\mathbf{y} - X\mathbf{b}\right\rVert\subscript{2}^2 + \sum\subscript{i=1}^J \lambda \sqrt{p\subscript{i}}\left\lVert\mathbf{b}\subscript{i}\right\rVert\subscript{2}.$$
 
 * For any $i$ this procedure either keeps the entire block $\mathbf{b}\subscript{i}$ non-zero, or sets all its components to zero.
             </script>
@@ -678,6 +678,10 @@ Similar to SLOPE, in considered settings...
 			</div>
 		</div>
 
+			</div>
+      <!-- End of slide show -->
+		</div>
+
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
 
@@ -692,11 +696,18 @@ Similar to SLOPE, in considered settings...
 				center: true,
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'default', // default / none / slide / concave / convex / zoom
 
 				// Parallax scrolling
 				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
 				// parallaxBackgroundSize: '2100px 900px',
+
+        // MathJax integration
+        math: {
+          mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+          config: 'TeX-AMS_HTML-full' // See http://docs.mathjax.org/en/latest/config-files.html
+        },
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
@@ -705,8 +716,10 @@ Similar to SLOPE, in considered settings...
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/math/math.js', async: true }
 				]
+
 			});
 
 		</script>
