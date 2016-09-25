@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+    <title>Probabilistic Numerics</title>
+
+		<meta name="description" content="Graduate Student Colloquium">
+		<meta name="author" content="Alexej Gossmann">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+    <!-- <link rel="stylesheet" href="css/theme/simple-custom.css"> -->
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+    <!-- MathJax interation, more configuration under Reveal.initialize below -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [["$","$"]]}});
+      MathJax.Hub.Config({TeX: {Macros:{subscript:['_{#1}',1],superscript:['^{#1}',1]}}});
+    </script> 
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+        <section data-markdown>
+          <script type="text/template">
+## Probabilistic Numerics 
+
+### Alexej Gossmann
+#### Graduate Student Colloquium, Tulane University
+### 2016/9/27
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## "What does it mean to 'know' a function?" (Diaconis, 1988)
+
+$$f: [0,1] \to \mathbb{R}$$
+
+$$f(x) = \exp\left[ \mathrm{cosh}\left( \frac{x + 2x^2 + \cos(x)}{3 + \sin(x^3)} \right) \right]$$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## "What does it mean to 'know' a function?" (Diaconis, 1988)
+
+* We know some things about $f$ but don't know others.
+* Can we derive *probabilistic* statements about what we don't know, based on the information that we have?
+* Isn't that the framework of Bayesian inference?
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+* We have epistemic uncertainty about $Z := \int_0^1 f(x) \mathrm{d}x$.
+* What if we treat $Z$ as a random variable?
+* We can choose a prior distribution for $Z$, and derive a posterior distribution based on our observed 'data' (a collection of function evaluations of $f$, i.e., the data are noiseless).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+# Prior distribution? Posterior distribution? Bayesian inference? Bayes' rule?
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayes' theorem
+
+<a title="By mattbuck (category) (Own work by mattbuck.) [CC BY-SA 2.0 (http://creativecommons.org/licenses/by-sa/2.0) or CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3ABayes'_Theorem_MMB_01.jpg"><img width="512" alt="Bayes&#039; Theorem MMB 01" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Bayes%27_Theorem_MMB_01.jpg/512px-Bayes%27_Theorem_MMB_01.jpg"/></a>
+
+<p> <small> By mattbuck (category) (Own work by mattbuck.) [CC BY-SA 2.0 (http://creativecommons.org/licenses/by-sa/2.0) or CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons </small> </p>
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Bayes' Theorem
+
+* $p(\theta)$ (prior distribution)
+* $p(\theta | y) = \frac{p(\theta, y)}{p(y)} = \frac{p(\theta) p(y | \theta)}{p(y)}$ (posterior distribution)
+* $p(y) = \sum\subscript{\theta \in \Theta} p(\theta) p(y | \theta)$ 
+or $p(y) = \int_{\Theta} p(\theta) p(y | \theta) \mathrm{d}\theta$
+* $p(\theta | y) \propto p(\theta) p(y | \theta)$ (unnormalized form) 
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Prediction 
+
+$$
+\begin{eqnarray}
+p(\tilde{y} | y) &=& \int\subscript\Theta p(\tilde{y}, \theta | y) \mathrm{d}\theta \nonumber \\\\
+                 &=& \int\subscript\Theta p(\tilde{y}| \theta, y) p(\theta | y) \mathrm{d}\theta \nonumber \\\\
+                 &=& \int\subscript\Theta p(\tilde{y}| \theta) p(\theta | y) \mathrm{d}\theta \nonumber \\\\
+\end{eqnarray}
+$$
+(posterior predictive distribution; integral can be written as a sum in discrete cases)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (based on "Bayesian Data Analysis" by Gelman et. al., Section 1.4)
+
+* [Hemophilia](https://en.wikipedia.org/wiki/Haemophilia) follows X-chromosome linked recessive inheritance of a particular gene.
+* Females are rarely affected (b/c two X chromosomes), but can be carriers of hemophilia.
+* Male carriers of the hemophilia gene always have the disease.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+![simple hemophilia pedigree](images/pedigree1.png?raw=true)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+![simple hemophilia pedigree updated](images/pedigree2.png?raw=true)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+#### Prior distribution
+
+$P(\theta = 0) = \frac{1}{2} = P(\theta = 1)$
+
+#### Posterior distribution
+
+$$P(\theta = 1 | y_1 = 0, y_2 = 0) = \frac{P(\theta = 1) P(y_1 = 0, y_2 = 0 | \theta = 1)}{P(y_1 = 0, y_2 = 0)}$$
+$$= \frac{P(\theta = 1) P(y_1 = 0, y_2 = 0 | \theta = 1)}{P(\theta = 1) P(y_1 = 0, y_2 = 0 | \theta = 1) + P(\theta = 0) p(y_1 = 0, y_2 = 0 | \theta = 0)}$$
+$$= \frac{ \frac{1}{2} \frac{1}{4} }{ \frac{1}{2} \frac{1}{4} + \frac{1}{2} 1} = 0.2.$$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+![simple hemophilia pedigree updated](images/pedigree3.png?raw=true)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+#### Prediction
+
+What is the probability that the next son will have hemophilia?
+
+$$
+\begin{eqnarray}
+P(y_3 = 1 | y_1 = 0, y_2 = 0) &=& P(y_3 = 1 | \theta = 1) P(\theta = 1 | y_1 = 0, y_2 = 0) \nonumber \\\\
+&+& P(y_3 = 1 | \theta = 0) P(\theta = 0 | y_1 = 0, y_2 = 0) \nonumber \\\\
+&=& \frac{1}{2} \cdot 0.2 + 0 \cdot 0.8 = 0.1.
+\end{eqnarray}
+$$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+![simple hemophilia pedigree updated](images/pedigree4.png?raw=true)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian inference
+
+### Basic example (cont.)
+
+It turns out that $y_3 = 0$, then we can update the posterior ditribution of $\theta$ once more:
+
+$$P(\theta = 1 | (y_1, y_2, y_3) = 0) = \frac{ P(y_3 = 0 | \theta = 1)P(\theta = 1 | (y_1, y_2) = 0)}{P((y_1, y_2, y_3) = 0)}$$
+$$= \frac{ \frac{1}{2} \cdot 0.2 }{ \frac{1}{2} \cdot 0.2 + 1 \cdot 0.8} = 1/9 \approx 0.11.$$
+
+(simply use the old posterior as the new prior)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Back to Bayesian quadrature 
+
+* We have epistemic uncertainty about $Z := \int_0^1 f(x) \mathrm{d}x$.
+* What if we treat $Z$ as a random variable?
+* We can choose a prior distribution for $Z$, and derive a posterior distribution based on our observed *noiseless* 'data'.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+### Prior distribution
+
+* It turns out that placing a prior on $f$ is easier than placing a prior directly on $Z$.
+* We can model $f$ with a *Gaussian process*, $p(f) = \mathcal{GP}(m, k)$:
+    - There is some $m: D \to \mathbb{R}$, such that $$ \forall x: \mathrm{E}(f(x)) = m(x),$$
+    - There is some $k: D \times D \to \mathbb{R}$, such that $$ \forall x, x': \mathrm{Cov}(f(x), f(x')) = k(x, x'),$$
+    - Every finite set of samples $f(x_i)$ has a joint Gaussian distribution.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+### Posterior distribution
+          </script>
+        </section>
+
+			</div>
+      <!-- End of slide show -->
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        backgroundTransition: 'default', // default / none / slide / concave / convex / zoom
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+        // MathJax integration
+        math: {
+          mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+          config: 'TeX-AMS_HTML-full' // See http://docs.mathjax.org/en/latest/config-files.html
+        },
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/math/math.js', async: true }
+				]
+
+			});
+
+		</script>
+
+	</body>
+</html>
