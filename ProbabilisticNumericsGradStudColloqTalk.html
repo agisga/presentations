@@ -271,6 +271,102 @@ $$= \frac{ \frac{1}{2} \cdot 0.2 }{ \frac{1}{2} \cdot 0.2 + 1 \cdot 0.8} = 1/9 \
 ## Bayesian quadrature 
 
 ### Posterior distribution
+
+* W.l.o.g. we can assume that $m = 0$ (otherwise, consider $g(x) := f(x) - m(x)$).
+* Denote by $f$ the vector of all available function evalutations $f(x_i)$ for $i \in \{1,2,\ldots,n\}$ (i.e., $\\{x_i, f(x_i)\\}_i$ are "noiseless" observations, aka data)
+* Denote by $\tilde{f}$ a vector of evalutions $f(x^\ast_j)$ at some other points $x^\ast_j \neq x_i$ for all $i \in \{1,2,\ldots,n\}$.
+
+$$\Rightarrow \begin{pmatrix} f \\\\ \tilde{f} \end{pmatrix} \sim \mathcal{N}\left( 0, 
+\begin{pmatrix}
+K(X, X) & K(X, X^\ast) \\\\
+K(X^\ast, X) & K(X^\ast, X^\ast)
+\end{pmatrix}
+\right)$$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+### Posterior distribution
+
+We have seen that
+
+$$\begin{pmatrix} f \\\\ \tilde{f} \end{pmatrix} \sim \mathcal{N}\left( 0, 
+\begin{pmatrix}
+K(X, X) & K(X, X^\ast) \\\\
+K(X^\ast, X) & K(X^\ast, X^\ast)
+\end{pmatrix}
+\right)$$
+
+Thus (because Gaussians are nice), it follows that
+
+$$
+\begin{eqnarray}
+\left( \tilde{f} | X^\ast, X, f \right) &\sim& \mathcal{N}\left( \tilde{\mu}, \tilde{V} \right), \nonumber \\\\
+\tilde{\mu} &=& K(X^\ast, X) K(X, X)^{-1} f, \nonumber \\\\
+\tilde{V} &=& K(X^\ast, X^\ast) - K(X^\ast, X) K(X, X)^{-1} K(X, X^\ast).
+\end{eqnarray}
+$$
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Prior and posterior example
+
+Choose $k(x, y) = \mathrm{min}(x, y)$.
+
+![Prior and posterior sample paths](images/GP_sample_paths.png?raw=true)
+
+**Blue line**: $f(x)$; **black lines**: samples from the prior; **red lines**: samples from the posterior; **black points**: the observed "data".
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+### Posterior mean example
+
+Still using $k(x, y) = \mathrm{min}(x, y)$. The posterior mean (in red) is piecewise linear.
+
+![Posterior mean](images/GP_posterior_mean.png?raw=true)
+
+(It is evident that the posterior mean of $\int f(x) \mathrm{d}x$ will turn out to be something like the trapezoid rule.)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+### Posterior distribution of the integral
+
+Using Fubini's Theorem we conclude that
+
+$$\mathrm{E}\left( \int f(x) \mathrm{d}x \right) = \int \mathrm{E}(f(x)) \mathrm{d}x = \sum\subscript{i=1}^n w_i f(x_i),$$
+
+where $w = K(X, X)^{-1} \int k(X, x) \mathrm{d}x$, and
+
+$$\mathrm{Var}\left( \int f(x) \mathrm{d}x \right) = \int \int k_n(x, x') \mathrm{d}x \mathrm{d}x',$$
+
+where $k_n$ denotes the covariance function w.r.t. the posterior distribution.
+
+Moreover, the distribution of $\int f(x) \mathrm{d}x$ is Gaussian, b/c Gaussian processes are closed under linear projections.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+### Posterior distribution of the integral
+
+* We have seen that the posterior mean of $\int f(x) \mathrm{d}x$ takes the form of a *quadrature rule*.
+* In fact, the above construction gives rise to several classical quadrature rules for specific choices of $k(\cdot, \cdot)$. From Diaconis (1988):
+    - Brownian covariance leads to the trapezoid rule.
+    - Integrated Brownian covariance function results in Simpson's rule.
+    - Higher order spline interpolations and Chebyshev polynomials can be obtained analogously with appropriate choice of $k$.
           </script>
         </section>
 
