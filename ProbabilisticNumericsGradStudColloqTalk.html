@@ -370,6 +370,49 @@ Moreover, the distribution of $\int f(x) \mathrm{d}x$ is Gaussian, b/c Gaussian 
           </script>
         </section>
 
+        <section data-markdown>
+          <script type="text/template">
+## Bayesian quadrature 
+
+If BQ just reinvents traditional quadrature methods, then **what's the point?** 
+
+1. We can also quantify the uncertainty with the posterior variance estimate! This allows us to
+    - Choose $x_1, \ldots, x_n$, such that the variance is minimized.
+    - Know how large $n$ to choose.
+    - Compute optimal quadrature rules (the variance does not depend on $f$).
+2. Design specialized quadrature rules for certain classes of functions, by chooseing an appropriate prior distribution that incorporates as much information as possible.
+3. BQ generalizes to multiple dimensions in a straight forward way.
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Probabilistic numerics beyond Bayesian quadrature 
+
+Work done in the recent years has reformulated many well known numerical methods as probabilistic inference problems (see <http://www.probabilistic-numerics.org>).
+
+1. **Linear algebra**: Conjugate gradients interpreted as a type of Gaussian regression (Hennig, 2015).
+2. **Optimization**: Quasi-Newton methods interpreted as autoregressive filtering (Hennig & Kiefel, 2013).
+3. **Differential equations**: Connection between Runge-Kutta methods and Gauss-Markov extrapolation (Schober, Duvenaud & Hennig, 2014).
+4. **PDE**: Already in 1949 Kac showed that solution to certain types of PDEs is exactly equal to the expected path of certain stochastic (Wiener) processes (see also, Feynman-Kac theorem).
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type="text/template">
+## Probabilistic numerics
+
+### More on "What's the point?"
+
+The discussion in Hennig et. al. (2015) "Probabilistic numerics and uncertainty in computations" mentions several points:
+
+* Implicit prior assumptions can now be questioned.
+* Explicit modeling of the numerical error, which is challenging in purely deterministic settings.
+* Propogation of knowledge between numerical problems.
+* Estimation of optimal parameters.
+* Communication of uncertainty through a chain of numerical methods.
+          </script>
+        </section>
 			</div>
       <!-- End of slide show -->
 		</div>
